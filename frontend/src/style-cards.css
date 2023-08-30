@@ -1,0 +1,65 @@
+
+#cards-container{
+    border: 5px solid white;
+    border-radius: 30px;
+    margin: 0px 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    /* background-color: rgba(255, 255, 255, 0.2); */
+    background-color: #9536BE;
+    min-height: 350px;
+}
+
+#card-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#server-issue-message {
+    display: none;
+    width: 1200px;
+    font-size: 30px;
+    text-align: center;
+}
+
+#no-results-message {
+    display: none;
+    width: 1200px;
+    font-size: 30px;
+    text-align: center;
+}
+
+.card{
+    width: auto;
+}  
+
+.card-name {
+    margin: 0;
+    text-align: center;
+    position: relative;
+    top: -10px;
+    transition: all 0.5s;
+}
+
+.card-image-container {
+    transition: all 0.5s;
+}
+
+.cropped{
+    width: 230px;
+    height: 300px;
+    object-fit: cover;
+    overflow: hidden;
+}
+
+.cropped img{
+    margin: -5px 0px 0px -35px;
+}
+
+.unknown-image{
+    padding: 0px 0px 0px 10px;
+} 

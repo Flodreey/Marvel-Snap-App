@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marvel Snap Cards</title>
+
+    <link rel="stylesheet" href="src/style-main.css">
+    <link rel="stylesheet" href="src/style-cards.css">
+    <link rel="stylesheet" href="src/style-card-info.css">
+    <link rel="stylesheet" href="src/style-search.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@300;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <main>
+        <img src="images/ MARVEL SNAP LOGO.png" alt="Marvel Snap Logo" width="500px" class="center">
+
+        <h1 id="title">Card Database</h1>
+
+        <div id="search-container">
+            <div id="search-field">
+                <input type="text" required oninput="search(this)">
+                <span>Search</span>
+            </div>
+    
+            <button id="filter-button" onclick="switchFilter()">
+                <img src="images/filter-symbol.png" alt="">
+            </button>
+        </div>
+
+        <!-- <div id="filter-container">
+
+            <h2 class="r1 c1">Sort by</h2>
+            <h3 class="r1 c2">&#x21E7;</h3>
+            <div id="sort-container" class="r1 c3">
+                <h3>Name</h3><h3>Power</h3><h3>Cost</h3> 
+            </div>
+
+            <h2 class="r2 c1">Cost</h2>
+            <h3 class="r2 c2">ALL</h3>
+            <div id="cost-container" class="r2 c3">
+                <h3>0</h3><h3>1</h3><h3>2</h3>
+                <h3>3</h3><h3>4</h3><h3>5</h3><h3>6+</h3>
+            </div>
+
+            <h2 class="r3 c1">Power</h2>
+            <h3 class="r3 c2">ALL</h3>
+            <div id="power-container" class="r3 c3">
+                <h3>-</h3><h3>0</h3><h3>1</h3>
+                <h3>2</h3><h3>3</h3><h3>4</h3><h3>5</h3>
+                <h3>6</h3><h3>7</h3><h3>8</h3><h3>9</h3>
+                <h3>10</h3><h3>11</h3><h3>12</h3><h3>13</h3>
+                <h3>14</h3><h3>15</h3><h3>16</h3><h3>17</h3>
+                <h3>18</h3><h3>19</h3><h3>20</h3>
+            </div>
+
+            <h2 class="r4 c1">Ability</h2>
+            <h3 class="r4 c2">ALL</h3>
+            <div id="ability-container" class="r4 c3">
+                <h3>No Ability</h3><h3>Ongoing</h3><h3>On Reveal</h3><h3>Other</h3>
+            </div>
+
+            <h2 class="r5 c1">Status</h2>
+            <h3 class="r5 c2">ALL</h3>
+            <div id="status-container" class="r5 c3">
+                <h3>Released</h3><h3>Unrelesed</h3>
+            </div>
+        </div>   -->
+
+        <div id="filter-container">
+
+            <div id="sort-container">
+                <h2>Sort By</h2>
+                <div id="radio-btn-container">
+                    <input type="radio" name="sort" id="name" value="name" checked>
+                    <label for="name" class="radio-item">Name</label>
+
+                    <input type="radio" name="sort" id="power" value="power">
+                    <label for="power" class="radio-item">Power</label>
+
+                    <input type="radio" name="sort" id="cost" value="cost">
+                    <label for="cost" class="radio-item">Cost</label>
+                </div>
+                <div id="sort-direction" onclick="rotateDirArrow()">
+                    <h3>&#x21E7;</h3>
+                </div>
+            </div>
+
+            <div id="cost-container">
+                <h3 class="heading">Cost</h3>
+                <input type="checkbox" id="cost-all" class="input-all" checked>
+                <label for="cost-all" class="all-button">ALL</label>
+                <div class="checkbox-container">
+                    <input type="checkbox" id="cost0" class="input-check" data-container="cost" checked>
+                    <label for="cost0" class="check">0</label>
+
+                    <input type="checkbox" id="cost1" class="input-check" data-container="cost" checked>
+                    <label for="cost1" class="check">1</label>
+
+                    <input type="checkbox" id="cost2" class="input-check" data-container="cost" checked>
+                    <label for="cost2" class="check">2</label>
+
+                    <input type="checkbox" id="cost3" class="input-check" data-container="cost" checked>
+                    <label for="cost3" class="check">3</label>
+
+                    <input type="checkbox" id="cost4" class="input-check" data-container="cost" checked>
+                    <label for="cost4" class="check">4</label>
+
+                    <input type="checkbox" id="cost5" class="input-check" data-container="cost" checked>
+                    <label for="cost5" class="check">5</label>
+
+                    <input type="checkbox" id="cost6" class="input-check" data-container="cost" checked>
+                    <label for="cost6" class="check">6+</label>
+                </div>
+            </div>
+
+            <div id="power-container">
+                <h2 class="heading">Power</h2>
+                <input type="checkbox" id="power-all" class="input-all" checked>
+                <label for="power-all" class="all-button">ALL</label>
+                <div class="checkbox-container">
+                    <input type="checkbox" id="power-" class="input-check" data-container="power" checked>
+                    <label for="power-" class="check">-</label>
+
+                    <input type="checkbox" id="power0" class="input-check" data-container="power" checked>
+                    <label for="power0" class="check">0</label>
+
+                    <input type="checkbox" id="power1" class="input-check" data-container="power" checked>
+                    <label for="power1" class="check">1</label>
+
+                    <input type="checkbox" id="power2" class="input-check" data-container="power" checked>
+                    <label for="power2" class="check">2</label>
+
+                    <input type="checkbox" id="power3" class="input-check" data-container="power" checked>
+                    <label for="power3" class="check">3</label>
+
+                    <input type="checkbox" id="power4" class="input-check" data-container="power" checked>
+                    <label for="power4" class="check">4</label>
+
+                    <input type="checkbox" id="power5" class="input-check" data-container="power" checked>
+                    <label for="power5" class="check">5</label>
+
+                    <input type="checkbox" id="power6" class="input-check" data-container="power" checked>
+                    <label for="power6" class="check">6</label>
+
+                    <input type="checkbox" id="power7" class="input-check" data-container="power" checked>
+                    <label for="power7" class="check">7</label>
+
+                    <input type="checkbox" id="power8" class="input-check" data-container="power" checked>
+                    <label for="power8" class="check">8</label>
+
+                    <input type="checkbox" id="power9" class="input-check" data-container="power" checked>
+                    <label for="power9" class="check">9</label>
+
+                    <input type="checkbox" id="power10" class="input-check" data-container="power" checked>
+                    <label for="power10" class="check">10</label>
+
+                    <input type="checkbox" id="power+" class="input-check" data-container="power" checked>
+                    <label for="power+" class="check">+</label>
+                </div>
+            </div>
+
+            <div id="ability-container">
+                <h2 class="heading">Ability</h2>
+                <input type="checkbox" id="ability-all" class="input-all" checked>
+                <label for="ability-all" class="all-button">ALL</label>
+                <div class="checkbox-container">
+                    <input type="checkbox" id="no-ability" class="input-check" data-container="ability" checked>
+                    <label for="no-ability" class="check">No Ability</label>
+
+                    <input type="checkbox" id="ongoing" class="input-check" data-container="ability" checked>
+                    <label for="ongoing" class="check">Ongoing</label>
+
+                    <input type="checkbox" id="other" class="input-check" data-container="ability" checked>
+                    <label for="other" class="check">Other</label>
+
+                    <input type="checkbox" id="on-reveal" class="input-check" data-container="ability" checked>
+                    <label for="on-reveal" class="check">On Reveal</label>
+                </div>
+            </div>
+
+            <div id="status-container">
+                <h2 class="heading">Status</h2>
+                <input type="checkbox" id="status-all" class="input-all" checked>
+                <label for="status-all" class="all-button">ALL</label>
+                <div class="checkbox-container">
+                    <input type="checkbox" id="released" class="input-check" data-container="status" checked>
+                    <label for="released" class="check">Released</label>
+
+                    <input type="checkbox" id="unreleased" class="input-check" data-container="status" checked>
+                    <label for="unreleased" class="check">Unreleased</label>
+                </div>
+            </div>
+
+            <button id="apply-button" onclick="applyFilter()">Apply Filter</button>
+
+        </div>
+
+        <div id="cards-container">
+
+            <div id="server-issue-message">
+                <h2>Server Issues</h2>
+                <h3>The servers think they can give us a time-out, but we've got a team of Avengers ready to assemble and bring them back online!</h3>
+                <h4>Cards may not be up to date and the search feature will not work</h4>
+            </div>
+
+            <div id="no-results-message">
+                <h2>No Search Results</h2>
+                <h3>Hulk tried smashing the search button, but it seems even he couldn't find the results this time. Keep calm and search on!</h3>
+            </div>
+            
+            <div id="card-list">
+                <!-- Cards will be shown here after receiving them from backend  -->
+            </div>
+            
+        </div>
+
+        <div id="bottom-space"></div>
+        <h2 id="author">Created by André Florentin</h2>
+    </main>
+
+    <div id="card-information-background" onclick="turnOffCardInformation()">
+        <div id="card-information-container" >
+            <div id="big-card-image">
+                <img src="" alt="">
+            </div>
+            <div id="name-and-description">
+                <h2 id="big-card-name"></h2>
+                <div id="big-card-description"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="src/app.js"></script>
+</body>
+</html>

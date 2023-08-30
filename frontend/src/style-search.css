@@ -1,0 +1,260 @@
+#search-container {
+    display: flex;
+    /* background-color: green; */
+    align-items: center;
+}
+
+#search-field {
+    max-width: 500px;
+    height: 30px;
+    border: 2px solid white;
+    border-radius: 30px;    
+    margin: 15px 0px 15px 50px;
+    position: relative;
+    padding: 10px;
+}
+
+#search-field input{
+    background-color: transparent;
+    font-size: 30px;
+    color: white;
+    transition: 0.5s;
+    width: 100%;
+    overflow: hidden;
+    border: none;
+}
+
+#search-field span {
+    color: white;
+    font-size: 30px;
+    padding: 0 10px;
+    position: absolute;
+    left: 20px;
+    top: 5px;
+    pointer-events: none;
+    transition: transform 0.5s;
+}
+
+#search-field input:valid ~ span, 
+#search-field input:focus ~ span{
+    background-color: #7B04AE;
+    transform: translate(0, -25px) scale(0.8);
+    border-color: rgb(46, 191, 220);
+}
+
+#search-field input:focus{
+    outline: none
+}
+
+#filter-button{
+    background-color: transparent;
+    margin: 0px 50px 10px 10px;
+    border: 2px solid #7B04AE;
+    border-radius: 30px;
+    position: relative;
+    top: 5px;
+    transition: transform 0.5s;
+    height: fit-content;
+} 
+
+#filter-button img {
+    width: 40px;
+    padding: 8px;
+}
+
+#filter-button:hover {
+    border: 2px solid white;
+}
+
+#filter-container {
+    max-height: 0;
+    overflow: hidden;
+    border: none;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    color: white;
+
+    display: grid;
+    grid-template-areas: 
+        'sort sort sort sort'
+        'cost power ability status'
+        'button button button button';
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    
+}
+
+#filter-container .heading {
+    font-size: 30px;
+    text-align: center;
+    border-bottom: 2px solid white;
+    margin: 0px 20px;
+}
+
+#filter-container .all-button {
+    display: block;
+    border: 1px solid white;
+    border-radius: 10px;
+    text-align: center;
+    width: fit-content;
+    margin: 20px auto;
+    padding: 5px 10px;
+    font-size: 20px;
+    box-sizing: border-box;
+    scale: 1.1;
+}
+
+#filter-container .radio-item {
+    border: 3px solid white;
+    font-size: 25px;
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+#filter-container .radio-item:hover, #filter-container .all-button:hover, #filter-container .check:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+#sort-container{
+    display: flex;
+    flex-wrap: nowrap;
+    grid-area: sort;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+#sort-container h2 {
+    font-size: 30px;
+}
+
+#radio-btn-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid white;
+    border-radius: 12px;
+    height: fit-content;
+}
+
+#sort-container .radio-item {
+    margin: 0;
+    border: none;
+    margin: 0;
+    padding: 5px 50px;
+}
+
+#filter-container input {
+    /* appearance: none;
+    margin: 0; */
+    display: none;
+}
+
+#sort-container input[type="radio"]:checked+label{
+    background-color: white;
+    color: black;
+}
+
+#sort-direction {
+    width: 40px;
+    height: 40px;
+    border: 1px solid white;
+    border-radius: 90px;
+    transition: transform 0.5s;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#sort-direction h3 {
+    font-size: 25px;
+    margin: 0;
+}
+
+#sort-direction:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.checkbox-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin: 0 40px;
+}
+
+#cost-container {
+    grid-area: cost;
+}
+
+#filter-container input[type="checkbox"]:checked+label{
+    background-color: white;
+    color: black;
+    /* border-width: 4px;
+    font-size: 20px; */
+}
+
+#filter-container .check{
+    border: 1px solid white;
+    border-radius: 10px;
+    min-width: 30px;
+    padding: 3px;
+    text-align: center;
+    font-size: 18px;
+    margin-block: 10px;
+    scale: 1.2;
+}
+
+#cost-container .check {
+    margin-inline: 20px;
+}
+
+#power-container .check {
+    margin-inline: 8px;
+}
+
+#power-container {
+    grid-area: power;
+}
+
+#ability-container{
+    grid-area: ability;
+}
+
+#ability-container .check{
+    margin-inline: 5px;
+    width: 100px;
+}
+
+#status-container{
+    grid-area: status;
+}
+
+#status-container .check {
+    width: 100px;
+    margin-inline: 5px;
+}
+
+#apply-button {
+    grid-area: button;
+    width: 70%;
+    padding: 10px;
+    margin: 30px auto 10px auto;
+    border-radius: 10px;
+    font-size: 25px;
+    background-color: rgba(255, 255, 255, 0.4);
+    border: 5px solid rgba(255, 255, 255, 0.4);
+    color: white;
+    transition: 0.5s;
+    font-family: 'Dosis', sans-serif;
+    letter-spacing: 5px;
+    font-weight: bold;
+
+    filter: blur(1px) grayscale(100%);
+    opacity: 0.6;
+}
+
+#apply-button:hover {
+    border-color: white;
+}

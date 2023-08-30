@@ -1,0 +1,37 @@
+body{
+    background-color: #7B04AE;
+    font-family: 'Dosis', sans-serif;
+    position: relative;
+}
+
+.stop-scrolling{
+    height: 100%;
+    overflow: hidden;
+}
+
+main{
+    height: 100%;
+    overflow: hidden;
+}
+
+.center{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
+#title {
+    text-align: center;
+    font-size: 5em;
+}
+
+#author{
+    font-size: 50px;
+    color: white;
+    text-align: center;
+}
+
+#bottom-space {
+    height: 500px;
+}
