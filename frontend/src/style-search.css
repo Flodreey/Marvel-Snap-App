@@ -78,7 +78,8 @@
     grid-template-areas: 
         'sort sort sort sort'
         'cost power ability status'
-        'button button button button';
+        'button button button button'
+        'warning warning warning warning';
     grid-template-columns: repeat(4, minmax(0, 1fr));
     
 }
@@ -223,7 +224,7 @@
 }
 
 #ability-container .check{
-    margin-inline: 5px;
+    margin-inline: 10px;
     width: 100px;
 }
 
@@ -233,7 +234,7 @@
 
 #status-container .check {
     width: 100px;
-    margin-inline: 5px;
+    margin-inline: 10px;
 }
 
 #apply-button {
@@ -257,4 +258,21 @@
 
 #apply-button:hover {
     border-color: white;
+}
+
+#filter-warning {
+    grid-area: warning;
+    margin-top: 0;
+    margin-bottom: 0px;
+    padding: 0;
+    height: 30px;
+}
+
+#filter-warning p{
+    display: none;
+    color: red;
+    font-size: 20px;
+    text-align: center;
+    padding: 0;
+    margin: 0;
 }

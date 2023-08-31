@@ -15,6 +15,7 @@ const costContainer = document.getElementById("cost-container")
 const powerContainer = document.getElementById("power-container")
 const abilityContainer = document.getElementById("ability-container")
 const statusContainer = document.getElementById("status-container")
+const filterWarning = document.getElementById("filter-warning")
 
 var card_data = []
 var currently_looking_at = ""
@@ -224,7 +225,8 @@ function switchFilter() {
         filterContainer.style.padding = "0px 10px 0px 10px"
     } else {
         filterContainer.style.transition = "max-height 1s"
-        filterContainer.style.maxHeight = filterContainer.scrollHeight + "px"
+        // filterContainer.style.maxHeight = filterContainer.scrollHeight + "px"
+        filterContainer.style.maxHeight = "600px"
         filterContainer.style.border = "5px solid white"
         filterContainer.style.borderBottom = "none"
         filterContainer.style.margin = "0px 30px -30px 30px"
@@ -242,15 +244,9 @@ function rotateDirArrow() {
     greyOutApplyButton(false)
 }
 
-var greyed = true
-function applyFilter() {
-    // if (!filter_is_collapsed) {
-    //     switchFilter()
-    // }
-    greyOutApplyButton(true)
-}
-
+var filter_greyed_out = true
 function greyOutApplyButton(enable){
+    filter_greyed_out = enable
     if (enable){
         applyButton.style.filter = "blur(1px) grayscale(100%)"
         applyButton.style.opacity = "0.6"
@@ -325,3 +321,104 @@ sortContainer.querySelectorAll("input").forEach(inp => {
         greyOutApplyButton(false)
     })
 })
+
+function arrayToString(array){
+    let result = ""
+    array.forEach(x => {
+        result += x + ","
+    })
+    return result.substring(0, result.length - 1)
+}
+
+function applyFilter() {
+    if (!filter_greyed_out) {
+        greyOutApplyButton(true)
+
+        let cost_array = []
+        let power_array = []
+        let ability_array = []
+        let status_array = [] 
+        let sorting
+        let direction 
+
+        // read checked cost buttons
+        costContainer.querySelectorAll(".checkbox-container input").forEach(inp => {
+            if (inp.checked) {
+                // every id has format cost0, cost1, cost2, ... so we just cut away cost to get the number
+                cost_array.push(inp.id.substring(4,inp.id.length))
+            }
+        })
+        if (cost_array.includes("6")){
+            cost_array.push("7")
+            cost_array.push("8")
+        }
+        
+        // read checked power buttons
+        powerContainer.querySelectorAll(".checkbox-container input").forEach(inp => {
+            if (inp.checked) {
+                // every id has format power0, power1, power2, ... so we just cut away cost to get the number
+                power_array.push(inp.id.substring(5,inp.id.length))
+            }
+        })
+        if (power_array.includes("-")){
+            for (let i = -10; i <= -1; i++)
+                power_array.push(i.toString())
+        }
+        if (power_array.includes("+")){
+            for (let i = 11; i <= 20; i++)
+                power_array.push(i.toString())
+        }
+        power_array = power_array.filter(v => {
+            if (v === "+" || v === "-") 
+                return false
+            return true
+        })
+
+        // read checked ability buttons
+        abilityContainer.querySelectorAll(".checkbox-container input").forEach(inp => {
+            if (inp.checked){
+                ability_array.push(inp.id)
+            }
+        })
+
+        // read checked status buttons
+        statusContainer.querySelectorAll(".checkbox-container input").forEach(inp => {
+            if (inp.checked){
+                status_array.push(inp.id)
+            }
+        })
+
+        // read sorting preference
+        const nameRadio = document.getElementById("name")
+        const costRadio = document.getElementById("cost")
+        const powerRadio = document.getElementById("power")
+        if (nameRadio.checked == true) 
+            sorting = "name"
+        else if (costRadio.checked == true) 
+            sorting = "cost"
+        else if (powerRadio.checked == true) 
+            sorting = "power"
+        
+        // read direction of sorting preference
+        if (arrowPointingDown) 
+            direction = "down"
+        else 
+            direction = "up"
+
+        if (cost_array.length == 0 || power_array.length == 0 || ability_array.length == 0 || status_array.length == 0) {
+            filterWarning.querySelector("p").style.display = "block"
+        } else {
+            filterWarning.querySelector("p").style.display = "none"
+
+            const cost_string = arrayToString(cost_array) 
+            const power_string = arrayToString(power_array)
+            const ability_string = arrayToString(ability_array)
+            const status_string = arrayToString(status_array)
+
+            cardList.innerHTML = ""
+            const url = "http://localhost:8000/cards/filter/" + cost_string + "/" + power_string + "/" + ability_string + "/" + status_string + "/" + sorting + "/" + direction
+            console.log(url)
+            fillCardsList(url)
+        }
+    }
+}
