@@ -24,7 +24,7 @@
 
         <div id="search-container">
             <div id="search-field">
-                <input type="text" required oninput="search(this)">
+                <input type="text" required oninput="applyFilter(true)">
                 <span>Search</span>
             </div>
     
@@ -158,7 +158,7 @@
                 </div>
             </div>
 
-            <button id="apply-button" onclick="applyFilter()">Apply Filter</button>
+            <button id="apply-button" onclick="applyFilter(false)">Apply Filter</button>
             <div id="filter-warning">
                 <p>At least one value must be selected in each of the four categories!</p>
             </div>

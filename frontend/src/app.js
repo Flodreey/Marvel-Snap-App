@@ -3,6 +3,7 @@ const cardList = document.getElementById("card-list")
 const noResultMessage = document.getElementById("no-results-message")
 const serverIssueMessage = document.getElementById("server-issue-message")
 const mainElement = document.querySelector("main")
+const searchField = document.getElementById("search-field")
 const cardInformationBackground = document.getElementById("card-information-background")
 const bigCardImage = document.getElementById("big-card-image")
 const bigCardName = document.getElementById("big-card-name")
@@ -159,13 +160,6 @@ bigCardImage.addEventListener("click", (e) => {e.stopPropagation()})
 bigCardName.addEventListener("click", (e) => {e.stopPropagation()})
 bigCardDescription.addEventListener("click", (e) => {e.stopPropagation()})
 
-// executed when something changes in the search bar
-function search(input){
-    cardList.innerHTML = ""
-    const url = "http://localhost:8000/cards/search/" + input.value
-    fillCardsList(url)
-}
-
 // handling key interaction
 document.addEventListener("keydown", (e) => {
 
@@ -215,6 +209,7 @@ function enableScroll () {
     window.onscroll = () => {};
 }
 
+// collapses and extends the filter container
 var filter_is_collapsed = true
 function switchFilter() {
     if (!filter_is_collapsed) {
@@ -235,6 +230,7 @@ function switchFilter() {
     filter_is_collapsed = !filter_is_collapsed
 }
 
+// rotates the direction arrow in filter container
 var arrowPointingDown = false
 var rotationAngle = 0
 function rotateDirArrow() {
@@ -256,6 +252,7 @@ function greyOutApplyButton(enable){
     }
 }
 
+// adding change events to all ALL-buttons in the filter container
 document.querySelectorAll(".input-all").forEach(inp => {
     inp.addEventListener("change", () => {
         let container
@@ -281,6 +278,7 @@ document.querySelectorAll(".input-all").forEach(inp => {
     })
 })
 
+// adding change events to all normal checkboxes in filter container
 document.querySelectorAll(".input-check").forEach(inp => {
     inp.addEventListener("change", () => {
 
@@ -322,101 +320,104 @@ sortContainer.querySelectorAll("input").forEach(inp => {
     })
 })
 
-function arrayToString(array){
-    let result = ""
-    array.forEach(x => {
-        result += x + ","
-    })
-    return result.substring(0, result.length - 1)
-}
-
-function applyFilter() {
-    if (!filter_greyed_out) {
+function applyFilter(search_field) {
+    if (!filter_greyed_out || search_field) {
         greyOutApplyButton(true)
 
-        let cost_array = []
-        let power_array = []
-        let ability_array = []
-        let status_array = [] 
-        let sorting
-        let direction 
+        let search_string = ""
+        let cost_string = ""
+        let power_string = ""
+        let ability_string = ""
+        let status_string = ""
+        let sorting_string = ""
+        let direction_string = ""
+
+        // read search field value
+        search_string = searchField.querySelector("input").value
 
         // read checked cost buttons
-        costContainer.querySelectorAll(".checkbox-container input").forEach(inp => {
-            if (inp.checked) {
-                // every id has format cost0, cost1, cost2, ... so we just cut away cost to get the number
-                cost_array.push(inp.id.substring(4,inp.id.length))
+        if (costContainer.querySelector("#cost-all").checked) {
+            cost_string = "all"
+        } else {
+            costContainer.querySelectorAll(".checkbox-container input").forEach(inp => {
+                if (inp.checked) {
+                    // every id has format cost0, cost1, cost2, ... so we just cut away cost to get the number
+                    cost_string += inp.id.substring(4,inp.id.length) + ","
+                }
+            })
+            if (cost_string.includes("6,")){
+                cost_string += "7,8"
             }
-        })
-        if (cost_array.includes("6")){
-            cost_array.push("7")
-            cost_array.push("8")
         }
         
         // read checked power buttons
-        powerContainer.querySelectorAll(".checkbox-container input").forEach(inp => {
-            if (inp.checked) {
-                // every id has format power0, power1, power2, ... so we just cut away cost to get the number
-                power_array.push(inp.id.substring(5,inp.id.length))
+        if (powerContainer.querySelector("#power-all").checked) {
+            power_string = "all"
+        } else {
+            powerContainer.querySelectorAll(".checkbox-container input").forEach(inp => {
+                if (inp.checked) {
+                    // every id has format power0, power1, power2, ... so we just cut away cost to get the number
+                    power_string += inp.id.substring(5,inp.id.length) + ","
+                }
+            })
+            if (power_string.includes("-,")){
+                for (let i = -10; i <= -1; i++)
+                    power_string += i.toString() + ","
             }
-        })
-        if (power_array.includes("-")){
-            for (let i = -10; i <= -1; i++)
-                power_array.push(i.toString())
+            if (power_string.includes("+,")){
+                for (let i = 11; i <= 20; i++)
+                    power_string += i.toString() + ","
+            }
+            power_string = power_string.replaceAll("+,", "").replaceAll("-,", "")
         }
-        if (power_array.includes("+")){
-            for (let i = 11; i <= 20; i++)
-                power_array.push(i.toString())
-        }
-        power_array = power_array.filter(v => {
-            if (v === "+" || v === "-") 
-                return false
-            return true
-        })
 
         // read checked ability buttons
-        abilityContainer.querySelectorAll(".checkbox-container input").forEach(inp => {
-            if (inp.checked){
-                ability_array.push(inp.id)
-            }
-        })
+        if (abilityContainer.querySelector("#ability-all").checked) {
+            ability_string = "all"
+        } else {
+            abilityContainer.querySelectorAll(".checkbox-container input").forEach(inp => {
+                if (inp.checked){
+                    ability_string += inp.id + "," 
+                }
+            })
+        }
 
         // read checked status buttons
-        statusContainer.querySelectorAll(".checkbox-container input").forEach(inp => {
-            if (inp.checked){
-                status_array.push(inp.id)
-            }
-        })
+        if (statusContainer.querySelector("#status-all").checked) {
+            status_string = "all"
+        } else {
+            statusContainer.querySelectorAll(".checkbox-container input").forEach(inp => {
+                if (inp.checked){
+                    status_string = inp.id + ","
+                }
+            })
+        }
 
         // read sorting preference
         const nameRadio = document.getElementById("name")
         const costRadio = document.getElementById("cost")
         const powerRadio = document.getElementById("power")
         if (nameRadio.checked == true) 
-            sorting = "name"
+            sorting_string = "name"
         else if (costRadio.checked == true) 
-            sorting = "cost"
+            sorting_string = "cost"
         else if (powerRadio.checked == true) 
-            sorting = "power"
+            sorting_string = "power"
         
         // read direction of sorting preference
         if (arrowPointingDown) 
-            direction = "down"
+            direction_string = "down"
         else 
-            direction = "up"
+            direction_string = "up"
 
-        if (cost_array.length == 0 || power_array.length == 0 || ability_array.length == 0 || status_array.length == 0) {
+        if (cost_string === "" || power_string === "" || ability_string === "" || status_string === "") {
             filterWarning.querySelector("p").style.display = "block"
         } else {
             filterWarning.querySelector("p").style.display = "none"
 
-            const cost_string = arrayToString(cost_array) 
-            const power_string = arrayToString(power_array)
-            const ability_string = arrayToString(ability_array)
-            const status_string = arrayToString(status_array)
-
             cardList.innerHTML = ""
-            const url = "http://localhost:8000/cards/filter/" + cost_string + "/" + power_string + "/" + ability_string + "/" + status_string + "/" + sorting + "/" + direction
+            const url = "http://localhost:8000/cards/filter?search=" + search_string + "&cost=" + cost_string + "&power=" + power_string + "&ability=" + 
+                        ability_string + "&status=" + status_string + "&sorting=" + sorting_string + "&direction=" + direction_string
             console.log(url)
             fillCardsList(url)
         }

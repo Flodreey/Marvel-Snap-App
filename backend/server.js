@@ -65,34 +65,38 @@ app.get('/cards', (req, res) => {
     res.json(cards)
 });
 
-app.get('/cards/search/', (req, res) => {
-    res.json(cards)
-});
-
-app.get("/cards/search/:search", (req, res) => {
-    const search_value = req.params.search.toUpperCase()
-    let search_result = []
-
-    cards.forEach(card => {
-        const upperCaseName = card.name.toUpperCase()
-        if (upperCaseName.includes(search_value)){
-            search_result.push(card)
-        }
-    })
-
-    res.json(search_result)
-})
-
-function filter_function(card, costs, powers, abilities, status) {
+function filter_function(card, search, costs, powers, abilities, status) {
     let passed = true
-    if (!costs.includes(card.cost) || !powers.includes(card.power) || !status.includes(card.status)) {
+
+    if (search != "all" && !card.name.toUpperCase().includes(search.toUpperCase()))
         passed = false
+
+    if (costs != "all"){
+        costs = costs.split(",").map(n => parseInt(n, 10))
+        if (!costs.includes(card.cost))
+            passed = false
     }
 
-    // intersection between card.abilities and abilities
-    const intersection = abilities.filter(a => card.abilities.includes(a))
-    if (intersection.length == 0) {
-        passed = false
+    if (powers != "all"){
+        powers = powers.split(",").map(n => parseInt(n, 10))
+        if (!powers.includes(card.power))
+            passed = false
+    }
+
+    if (status != "all"){
+        status = status.split(",")
+        if (!status.includes(card.status))
+            passed = false
+    }
+
+
+    if (abilities != "all"){
+        // intersection between card.abilities and abilities
+        abilities = abilities.split(",")
+        const intersection = abilities.filter(a => card.abilities.includes(a))
+        if (intersection.length == 0) {
+            passed = false
+        }
     }
 
     return passed
@@ -119,22 +123,35 @@ function sort_function(card1, card2, sorting, direction) {
     }
 }
 
-app.get("/cards/filter/:cost/:power/:ability/:status/:sorting/:direction", (req, res) => {
-    const cost_string = req.params.cost 
-    const power_string = req.params.power 
-    const ability_string = req.params.ability 
-    const status_string = req.params.status 
-    const sorting = req.params.sorting 
-    const direction = req.params.direction
+app.get("/cards/filter", (req, res) => {
+    let search_string = req.query.search
+    let cost_string = req.query.cost 
+    let power_string = req.query.power 
+    let ability_string = req.query.ability 
+    let status_string = req.query.status 
+    let sorting_string = req.query.sorting 
+    let direction_string = req.query.direction
 
-    const costs = cost_string.split(",").map(n => parseInt(n, 10))
-    const powers = power_string.split(",").map(n => parseInt(n, 10))
-    const abilities = ability_string.split(",")
-    const status = status_string.split(",")
+    // it shouln't happen, but if somehow filter items are undefined, then we set them to default values
+    if (search_string == undefined) 
+        search_string = "all"
+    if (cost_string == undefined) 
+        cost_string = "all"
+    if (power_string == undefined) 
+        power_string = "all"
+    if (ability_string == undefined) 
+        ability_string = "all"
+    if (status_string == undefined) 
+        status_string = "all"
+    if (sorting_string == undefined) 
+        sorting_string = "name"
+    if (direction_string == undefined) 
+        direction_string = "up"
 
-    let cards_filtered = cards.filter(card => filter_function(card, costs, powers, abilities, status))
+    let cards_filtered = cards.filter(card => filter_function(card, search_string, cost_string, power_string, ability_string, status_string))
 
-    cards_filtered = cards_filtered.sort((a,b) => sort_function(a, b, sorting, direction))
+    cards_filtered = cards_filtered.sort((c1, c2) => sort_function(c1, c2, sorting_string, direction_string))
 
+    // console.log({search_string, cost_string, power_string, ability_string, status_string, sorting_string, direction_string})
     res.json(cards_filtered)
 })
