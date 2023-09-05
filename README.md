@@ -1,5 +1,5 @@
 <div align="center">
-  <img width="700" alt="Marvel Snap Logo" src="https://github.com/Flodreey/Marvel-Snap-App/assets/80370750/56e16706-e722-4fba-8701-fb9827e710e8">
+  <img width="700" alt="Marvel Snap Logo" src="https://github.com/Flodreey/Marvel-Snap-App/assets/80370750/d1e73871-a94f-49a1-8671-0d6454e5437d">
 </div>
 
 # Marvel Snap App
@@ -28,7 +28,7 @@ Contributions and suggestions for improvement are always welcome!
 ## Screenshots
 
 <div align="center">
-  <img width="700" alt="Screenshot1" src="https://github.com/Flodreey/Marvel-Snap-App/assets/80370750/3ce0041a-16bf-462e-acff-c0f5692a09b9">
+  <img width="700" alt="Screenshot1" src="https://github.com/Flodreey/Marvel-Snap-App/assets/80370750/e0c252df-cf18-4a0d-b0d6-d28d8351a4e8">
   <p>Card Database</p>
 </div>
 
@@ -36,7 +36,7 @@ Contributions and suggestions for improvement are always welcome!
 <br>
 
 <div align="center">
-  <img width="700" alt="Screenshot2" src="https://github.com/Flodreey/Marvel-Snap-App/assets/80370750/adde362d-c012-4cec-8c9c-7dcca0fd4836">
+  <img width="700" alt="Screenshot2" src="https://github.com/Flodreey/Marvel-Snap-App/assets/80370750/fb811304-b114-4c56-b5ab-527defa4c1b6">
   <p>More card information when clicking on a card</p>
 </div>
 
@@ -44,7 +44,7 @@ Contributions and suggestions for improvement are always welcome!
 <br>
 
 <div align="center">
-  <img width="700" alt="Screenshot3" src="https://github.com/Flodreey/Marvel-Snap-App/assets/80370750/a5311a30-5db6-44a2-b76a-54e3befdd1af">
+  <img width="700" alt="Screenshot3" src="https://github.com/Flodreey/Marvel-Snap-App/assets/80370750/6c28df79-bdf2-45ec-99e3-21d06373c8ae">
   <p>Search for cards</p>
 </div>
 
@@ -52,6 +52,6 @@ Contributions and suggestions for improvement are always welcome!
 <br>
 
 <div align="center">
-  <img width="700" alt="Screenshot4" src="https://github.com/Flodreey/Marvel-Snap-App/assets/80370750/f1a39fb8-0cce-4bd6-bd52-4c1f706e446c">
+  <img width="700" alt="Screenshot4" src="https://github.com/Flodreey/Marvel-Snap-App/assets/80370750/75dc92bb-f744-4c54-86ad-bedf792255e6">
   <p>Applying filters and sorting preferences</p>
 </div>
