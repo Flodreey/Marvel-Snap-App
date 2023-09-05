@@ -5,13 +5,25 @@
 # Marvel Snap App
 Marvel Snap is an outstanding strategic card game. This project retrieves information about Marvel Snap cards, including their names, powers, costs, abilities and more, from `https://marvelsnapzone.com/getinfo/?searchtype=cards&searchcardstype=true`. The gathered data is then elegantly presented, allowing a great browsing experience. Additionally the website offers users targeted card searches and the application of filters and sorting preferences within the card database.
 
-<!--## Quickstart
+## Quickstart
+Clone the project to your system: 
+```bash
+https://github.com/Flodreey/Marvel-Snap-App.git
+```
+In your terminal go to the "backend"-folder of the project and run the following command:
+```bash
+npm run start
+```
+which will run the script "start" and start the backend server.
 
-## Frontend
+Now you can open the "index.html" file in the "frontend"-folder and view the card database.
 
-## Backend
+<!--## Frontend
 
-## Contributions -->
+## Backend-->
+
+## Contributions
+Contributions and suggestions for improvement are always welcome! 
 
 ## Screenshots
 
