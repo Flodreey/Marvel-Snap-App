@@ -55,7 +55,13 @@ function main() {
                 if (abilities.length == 0) 
                     abilities.push("other")
 
-                cards.push({name, description, imageURL, cost, power, abilities, status})
+                var variants = []
+                variants.push(imageURL)
+                card.variants.forEach(v => {
+                    variants.push(v.art)
+                })
+
+                cards.push({name, description, imageURL, cost, power, abilities, status, variants})
             })
         })
         .catch(error => console.log(error.message))

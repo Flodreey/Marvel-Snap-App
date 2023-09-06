@@ -8,6 +8,9 @@ const cardInformationBackground = document.getElementById("card-information-back
 const bigCardImage = document.getElementById("big-card-image")
 const bigCardName = document.getElementById("big-card-name")
 const bigCardDescription = document.getElementById("big-card-description")
+const variantButtonContainer = document.getElementById("variant-button-container")
+const prevCardButton = document.getElementById("prev-card-button")
+const nextCardButton = document.getElementById("next-card-button")
 const filterContainer = document.getElementById("filter-container")
 const sortContainer = document.getElementById("sort-container")
 const sortDirection = document.getElementById("sort-direction")
@@ -20,6 +23,7 @@ const filterWarning = document.getElementById("filter-warning")
 
 var card_data = []
 var currently_looking_at = ""
+var variant_index = 0
 
 fillCardsList("http://localhost:8000/cards/")
 
@@ -52,7 +56,15 @@ function fillCardsList(api_url){
                     cardList.insertAdjacentHTML("beforeend", card_html)
 
                     // store data from server in card_data and in localStorage (so that application works also if server problems)
-                    card_data.push({index: index, name: card.name, description: card.description, imageURL : card.imageURL})
+                    const name = card.name 
+                    const description = card.description
+                    const imageURL = card.imageURL 
+                    const cost = card.cost 
+                    const power = card.power 
+                    const abilities = card.abilities 
+                    const status = card.status 
+                    const variants = card.variants
+                    card_data.push({index, name, description, imageURL, cost, power, abilities, status, variants})
                     if (localStorage) {
                         const jsonString = JSON.stringify({name: card.name, description: card.description, imageURL : card.imageURL})
                         localStorage.setItem(index, jsonString)    
@@ -117,33 +129,44 @@ function getCardData(card_name) {
     return card_data.find(card => card.name === card_name)
 }
 
-// executed when card gets clicked -> opens card information page for that card
-function clickCard(card){
-    // make card information page visible and background blurry
-    cardInformationBackground.style.display = "block"
-    mainElement.style.filter = "blur(5px)"
-    
-    const card_name = card.querySelector(".card-name").innerHTML
-    const clicked_card = getCardData(card_name)
-
+function fillCardInfoPage(card) {
     // set image of card information page
     // if card has an image (not question mark image) then show that image on card information page otherwise show no image
-    if (clicked_card.imageURL != "") {
+    if (card.imageURL != "") {
         bigCardImage.style.display = "block"
-        bigCardImage.querySelector("img").src = clicked_card.imageURL
+        bigCardImage.querySelector("img").src = card.imageURL
     } else {
         bigCardImage.style.display = "none"
     }
     
     // set name of card information page
-    bigCardName.innerHTML = card_name
+    bigCardName.innerHTML = card.name
 
     // set description of card information page and make "On Reveal:" and "Ongoing:" bold
-    const card_description = clicked_card.description.replace("On Reveal:", "<strong>On Reveal:</strong>").replace("Ongoing:", "<strong>Ongoing:</strong>")
+    const card_description = card.description.replace("On Reveal:", "<strong>On Reveal:</strong>").replace("Ongoing:", "<strong>Ongoing:</strong>")
     bigCardDescription.innerHTML = card_description
 
-    currently_looking_at = card_name
+    if (card.variants.length == 1) {
+        variantButtonContainer.style.display = "none"
+    } else {
+        variantButtonContainer.style.display = "block"
+    }
+    currently_looking_at = card.name
+    variant_index = 0
+}
+
+// executed when card gets clicked -> opens card information page for that card
+function clickCard(card){
+    // make card information page visible and background blurry
+    cardInformationBackground.style.display = "block"
+    mainElement.style.filter = "blur(5px)"
+
     disableScroll()
+    
+    const card_name = card.querySelector(".card-name").innerHTML
+    const clicked_card = getCardData(card_name)
+
+    fillCardInfoPage(clicked_card)
 }
 
 // executed when card information page gets closed (by pressing esc or by clicking on the background)
@@ -151,14 +174,19 @@ function turnOffCardInformation(){
     cardInformationBackground.style.display = "none"
     mainElement.style.filter = "none"
     currently_looking_at = ""
+    variant_index = 0
     enableScroll()
 }
 
-// when clicking on bigCardImage, bigCardName, bigCardDescription (which is inside cardInformationBackground) then 
-// we don't want to close card information page
+// when clicking on bigCardImage, bigCardName, bigCardDescription, buttons (which are inside 
+// cardInformationBackground) then we don't want to close card information page
 bigCardImage.addEventListener("click", (e) => {e.stopPropagation()})
 bigCardName.addEventListener("click", (e) => {e.stopPropagation()})
 bigCardDescription.addEventListener("click", (e) => {e.stopPropagation()})
+variantButtonContainer.addEventListener("click", (e) => {e.stopPropagation()})
+document.querySelectorAll(".prev-next-buttons").forEach(button => {
+    button.addEventListener("click", (e) => {e.stopPropagation()})
+})
 
 // handling key interaction
 document.addEventListener("keydown", (e) => {
@@ -168,29 +196,14 @@ document.addEventListener("keydown", (e) => {
             const current_card = getCardData(currently_looking_at)
             let next_card = current_card
             if (e.key === "ArrowUp") {
-                // do nothing yet
+                clickNextVariantButton("up")
             } else if (e.key === "ArrowRight") {
-                // show next card if possible
-                if (current_card.index != card_data.length - 1)
-                    next_card = card_data[current_card.index + 1]
+                clickNextCardButton("forward")
             } else if (e.key === "ArrowDown") {
-                // do nothing yet
+                clickNextVariantButton("down")
             } else if (e.key === "ArrowLeft") {
-                // show previous card if possible
-                if (current_card.index != 0)
-                    next_card = card_data[current_card.index - 1]
+                clickNextCardButton("backward")
             }
-
-            if (next_card.imageURL == "") {
-                bigCardImage.style.display = "none"
-            } else {
-                bigCardImage.style.display = "block"
-                bigCardImage.querySelector("img").src = next_card.imageURL
-            }
-            bigCardName.innerHTML = next_card.name
-            bigCardDescription.innerHTML = next_card.description.replace("On Reveal:", "<strong>On Reveal:</strong>").replace("Ongoing:", "<strong>Ongoing:</strong>")
-    
-            currently_looking_at = next_card.name
         }
 
         if (e.key === "Escape") {
@@ -198,6 +211,35 @@ document.addEventListener("keydown", (e) => {
         }
     }
 })
+
+function clickNextCardButton(direction) {
+    const current_card = getCardData(currently_looking_at)
+    let next_card = current_card
+
+    if (direction === "forward") {
+        // show next card if possible
+        if (current_card.index != card_data.length - 1)
+            next_card = card_data[current_card.index + 1]
+    } else if (direction === "backward") {
+        // show previous card if possible
+        if (current_card.index != 0)
+            next_card = card_data[current_card.index - 1]
+    }
+
+    fillCardInfoPage(next_card)
+}
+
+function clickNextVariantButton(direction) {
+    const current_card = getCardData(currently_looking_at)
+    if (direction === "up") {
+        variant_index = (variant_index + 1) % current_card.variants.length
+    } else if (direction === "down") {
+        variant_index--
+        if (variant_index == -1) 
+            variant_index = current_card.variants.length - 1
+    }
+    bigCardImage.querySelector("img").src = getCardData(currently_looking_at).variants[variant_index]
+}
 
 function disableScroll () {
     var xPos = window.scrollX;

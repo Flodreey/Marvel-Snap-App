@@ -188,7 +188,14 @@
     </main>
 
     <div id="card-information-background" onclick="turnOffCardInformation()">
-        <div id="card-information-container" >
+        <div id="prev-card-button" class="prev-next-buttons" onclick="clickNextCardButton('backward')">
+            <p>&#8249;</p>
+        </div>
+        <div id="card-information-container">
+            <div id="variant-button-container">
+                <p onclick="clickNextVariantButton('up')">&#8249;</p>
+                <p onclick="clickNextVariantButton('down')">&#8249;</p>
+            </div>
             <div id="big-card-image">
                 <img src="" alt="">
             </div>
@@ -196,6 +203,9 @@
                 <h2 id="big-card-name"></h2>
                 <div id="big-card-description"></div>
             </div>
+        </div>
+        <div id="next-card-button" class="prev-next-buttons" onclick="clickNextCardButton('forward')">
+            <p>&#8250;</p>
         </div>
     </div>
 

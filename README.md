@@ -10,11 +10,11 @@ Clone the project to your system:
 ```bash
 https://github.com/Flodreey/Marvel-Snap-App.git
 ```
-In your terminal go to the "backend"-folder of the project and run the following command:
+In your terminal navigate to the "backend"-folder of the project and run the following command:
 ```bash
 npm run start
 ```
-which will run the script "start" and start the backend server.
+which will run the script "start" and start the backend server (If you don't have a node yet, download it here: Node.js).
 
 Now you can open the "index.html" file in the "frontend"-folder and view the card database.
 
