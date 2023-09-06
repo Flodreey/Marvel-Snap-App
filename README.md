@@ -14,7 +14,7 @@ In your terminal navigate to the "backend"-folder of the project and run the fol
 ```bash
 npm run start
 ```
-which will run the script "start" and start the backend server (If you don't have a node yet, download it here: Node.js).
+which will run the script "start" and start the backend server (If you don't have node yet, download it here: [Node.js](https://nodejs.org/de)).
 
 Now you can open the "index.html" file in the "frontend"-folder and view the card database.
 
