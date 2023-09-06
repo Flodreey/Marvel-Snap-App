@@ -9,6 +9,8 @@ const bigCardImage = document.getElementById("big-card-image")
 const bigCardName = document.getElementById("big-card-name")
 const bigCardDescription = document.getElementById("big-card-description")
 const variantButtonContainer = document.getElementById("variant-button-container")
+const prevVariantButton = document.getElementById("prev-variant-button")
+const nextVariantButton = document.getElementById("next-variant-button")
 const prevCardButton = document.getElementById("prev-card-button")
 const nextCardButton = document.getElementById("next-card-button")
 const filterContainer = document.getElementById("filter-container")
@@ -192,23 +194,37 @@ document.querySelectorAll(".prev-next-buttons").forEach(button => {
 document.addEventListener("keydown", (e) => {
 
     if (cardInformationBackground.style.display === "block") {
-        if (e.key === "ArrowUp" || e.key === "ArrowRight" || e.key === "ArrowDown" || e.key === "ArrowLeft") {
-            const current_card = getCardData(currently_looking_at)
-            let next_card = current_card
-            if (e.key === "ArrowUp") {
-                clickNextVariantButton("up")
-            } else if (e.key === "ArrowRight") {
-                clickNextCardButton("forward")
-            } else if (e.key === "ArrowDown") {
-                clickNextVariantButton("down")
-            } else if (e.key === "ArrowLeft") {
-                clickNextCardButton("backward")
-            }
+        if (e.key === "ArrowUp") {
+            clickNextVariantButton("up")
+            nextVariantButton.style.backgroundColor = "#bbb"
+        } else if (e.key === "ArrowRight") {
+            clickNextCardButton("forward")
+            nextCardButton.style.backgroundColor = "#bbb"
+        } else if (e.key === "ArrowDown") {
+            clickNextVariantButton("down")
+            prevVariantButton.style.backgroundColor = "#bbb"
+        } else if (e.key === "ArrowLeft") {
+            clickNextCardButton("backward")
+            prevCardButton.style.backgroundColor = "#bbb"
         }
 
         if (e.key === "Escape") {
             turnOffCardInformation()
         }
+    }
+})
+
+document.addEventListener("keyup", (e) => {
+
+    if (cardInformationBackground.style.display === "block") {
+        if (e.key === "ArrowUp") 
+            nextVariantButton.style.backgroundColor = "#f1f1f1"
+        else if (e.key === "ArrowRight") 
+            nextCardButton.style.backgroundColor = "#f1f1f1"
+        else if (e.key === "ArrowDown")
+            prevVariantButton.style.backgroundColor = "#f1f1f1"
+        else if (e.key === "ArrowLeft")
+            prevCardButton.style.backgroundColor = "#f1f1f1"
     }
 })
 
