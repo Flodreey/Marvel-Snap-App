@@ -37,7 +37,7 @@
 }
 
 #variant-button-container p {
-    background-color: #f1f1f1;
+    /* background-color: #f1f1f1; */
     opacity: 0.5;
     border-radius: 50%;
     width: 50px;
@@ -50,6 +50,14 @@
     font-size: 50px;
     font-family: Arial, Helvetica, sans-serif;
     box-sizing: border-box;
+}
+
+.arrow-button-not-hover {
+    background-color: #f1f1f1;
+}
+
+.arrow-button-hover {
+    background-color: #bbb;  
 }
 
 #variant-button-container p:hover {
@@ -75,16 +83,16 @@
     position: absolute;
     top: 0;
     bottom: 0;
-    background-color: #f1f1f1;
+    /* background-color: #f1f1f1; */
     opacity: 0.5;
     padding: 0;
     margin: auto 0;
     box-sizing: border-box;
-
 }
 
 .prev-next-buttons:hover {
     background-color: #bbb;
+    
 }
 
 #prev-card-button {

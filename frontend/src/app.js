@@ -68,7 +68,7 @@ function fillCardsList(api_url){
                     const variants = card.variants
                     card_data.push({index, name, description, imageURL, cost, power, abilities, status, variants})
                     if (localStorage) {
-                        const jsonString = JSON.stringify({name: card.name, description: card.description, imageURL : card.imageURL})
+                        const jsonString = JSON.stringify({name, description, imageURL, cost, power, abilities, status, variants})
                         localStorage.setItem(index, jsonString)    
                     }   
 
@@ -84,7 +84,16 @@ function fillCardsList(api_url){
                 const card_html = createCardHTML(i, card.name, card.imageURL)
                 cardList.insertAdjacentHTML("beforeend", card_html)
 
-                card_data.push({index: i, name: card.name, description: card.description, imageURL: card.imageURL})
+                const index = i
+                const name = card.name 
+                const description = card.description
+                const imageURL = card.imageURL 
+                const cost = card.cost 
+                const power = card.power 
+                const abilities = card.abilities 
+                const status = card.status 
+                const variants = card.variants
+                card_data.push({index, name, description, imageURL, cost, power, abilities, status, variants})
             }
         })
 }
@@ -196,16 +205,20 @@ document.addEventListener("keydown", (e) => {
     if (cardInformationBackground.style.display === "block") {
         if (e.key === "ArrowUp") {
             clickNextVariantButton("up")
-            nextVariantButton.style.backgroundColor = "#bbb"
+            nextVariantButton.classList.remove("arrow-button-not-hover")
+            nextVariantButton.classList.add("arrow-button-hover")
         } else if (e.key === "ArrowRight") {
             clickNextCardButton("forward")
-            nextCardButton.style.backgroundColor = "#bbb"
+            nextCardButton.classList.remove("arrow-button-not-hover")
+            nextCardButton.classList.add("arrow-button-hover")
         } else if (e.key === "ArrowDown") {
             clickNextVariantButton("down")
-            prevVariantButton.style.backgroundColor = "#bbb"
+            prevVariantButton.classList.remove("arrow-button-not-hover")
+            prevVariantButton.classList.add("arrow-button-hover")
         } else if (e.key === "ArrowLeft") {
             clickNextCardButton("backward")
-            prevCardButton.style.backgroundColor = "#bbb"
+            prevCardButton.classList.remove("arrow-button-not-hover")
+            prevCardButton.classList.add("arrow-button-hover")
         }
 
         if (e.key === "Escape") {
@@ -217,14 +230,19 @@ document.addEventListener("keydown", (e) => {
 document.addEventListener("keyup", (e) => {
 
     if (cardInformationBackground.style.display === "block") {
-        if (e.key === "ArrowUp") 
-            nextVariantButton.style.backgroundColor = "#f1f1f1"
-        else if (e.key === "ArrowRight") 
-            nextCardButton.style.backgroundColor = "#f1f1f1"
-        else if (e.key === "ArrowDown")
-            prevVariantButton.style.backgroundColor = "#f1f1f1"
-        else if (e.key === "ArrowLeft")
-            prevCardButton.style.backgroundColor = "#f1f1f1"
+        if (e.key === "ArrowUp") {
+            nextVariantButton.classList.add("arrow-button-not-hover")
+            nextVariantButton.classList.remove("arrow-button-hover")
+        } else if (e.key === "ArrowRight") {
+            nextCardButton.classList.add("arrow-button-not-hover")
+            nextCardButton.classList.remove("arrow-button-hover")
+        } else if (e.key === "ArrowDown") {
+            prevVariantButton.classList.add("arrow-button-not-hover")
+            prevVariantButton.classList.remove("arrow-button-hover")
+        } else if (e.key === "ArrowLeft") {
+            prevCardButton.classList.add("arrow-button-not-hover")
+            prevCardButton.classList.remove("arrow-button-hover")
+        }
     }
 })
 
