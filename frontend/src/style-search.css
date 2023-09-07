@@ -4,6 +4,16 @@
     align-items: center;
 }
 
+.disabled {
+    filter: blur(1px) grayscale(100%);
+    opacity: 0.6;
+    border-color: transparent !important; 
+}
+
+.not-allowed-cursor {
+    cursor: not-allowed;
+}
+
 #search-field {
     max-width: 500px;
     height: 30px;

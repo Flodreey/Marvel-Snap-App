@@ -28,7 +28,7 @@ Contributions and suggestions for improvement are always welcome!
 ## Screenshots
 
 <div align="center">
-  <img width="700" alt="Screenshot1" src="https://github.com/Flodreey/Marvel-Snap-App/assets/80370750/e0c252df-cf18-4a0d-b0d6-d28d8351a4e8">
+  <img width="700" alt="Screenshot 1: Card Database" src="/readme-images/screenshot1.png">
   <p>Card Database</p>
 </div>
 
@@ -36,7 +36,7 @@ Contributions and suggestions for improvement are always welcome!
 <br>
 
 <div align="center">
-  <img width="700" alt="Screenshot2" src="https://github.com/Flodreey/Marvel-Snap-App/assets/80370750/fb811304-b114-4c56-b5ab-527defa4c1b6">
+  <img width="700" alt="Screenshot 2: More card information when clicking on a card" src="/readme-images/screenshot2.png">
   <p>More card information when clicking on a card</p>
 </div>
 
@@ -44,7 +44,7 @@ Contributions and suggestions for improvement are always welcome!
 <br>
 
 <div align="center">
-  <img width="700" alt="Screenshot3" src="https://github.com/Flodreey/Marvel-Snap-App/assets/80370750/6c28df79-bdf2-45ec-99e3-21d06373c8ae">
+  <img width="700" alt="Screenshot 3: Search for cards" src="/readme-images/screenshot3.png">
   <p>Search for cards</p>
 </div>
 
@@ -52,6 +52,6 @@ Contributions and suggestions for improvement are always welcome!
 <br>
 
 <div align="center">
-  <img width="700" alt="Screenshot4" src="https://github.com/Flodreey/Marvel-Snap-App/assets/80370750/75dc92bb-f744-4c54-86ad-bedf792255e6">
+  <img width="700" alt="Screenshot 4: Applying filters and sorting preferences" src="/readme-images/screenshot4.png">
   <p>Applying filters and sorting preferences</p>
 </div>

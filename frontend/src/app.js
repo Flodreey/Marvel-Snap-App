@@ -3,7 +3,6 @@ const cardList = document.getElementById("card-list")
 const noResultMessage = document.getElementById("no-results-message")
 const serverIssueMessage = document.getElementById("server-issue-message")
 const mainElement = document.querySelector("main")
-const searchField = document.getElementById("search-field")
 const cardInformationBackground = document.getElementById("card-information-background")
 const bigCardImage = document.getElementById("big-card-image")
 const bigCardName = document.getElementById("big-card-name")
@@ -13,6 +12,9 @@ const prevVariantButton = document.getElementById("prev-variant-button")
 const nextVariantButton = document.getElementById("next-variant-button")
 const prevCardButton = document.getElementById("prev-card-button")
 const nextCardButton = document.getElementById("next-card-button")
+const searchContainer = document.getElementById("search-container")
+const searchField = document.getElementById("search-field")
+const filterButton = document.getElementById("filter-button")
 const filterContainer = document.getElementById("filter-container")
 const sortContainer = document.getElementById("sort-container")
 const sortDirection = document.getElementById("sort-direction")
@@ -23,11 +25,13 @@ const abilityContainer = document.getElementById("ability-container")
 const statusContainer = document.getElementById("status-container")
 const filterWarning = document.getElementById("filter-warning")
 
+// global variables
 var card_data = []
 var currently_looking_at = ""
 var variant_index = 0
+var filter_is_collapsed = true
 
-fillCardsList("http://localhost:8000/cards/")
+fillCardsList("http://localhost:8000/cards/", true)
 
 // creates the HTML code for one card that gets later inserted into index.html
 function createCardHTML(index, name, imageURL) {
@@ -41,17 +45,24 @@ function createCardHTML(index, name, imageURL) {
 }
 
 // fetches card data from server and fills cardList element in index.html with all card's HTML
-function fillCardsList(api_url){
+function fillCardsList(api_url, storeLocalStorage){
     card_data = []
     var index = 0
     fetch(api_url)
         .then(response => response.json())
         .then(data => {
-            localStorage.clear()
+            // enable search and filter functionality 
+            enableSearchFilter(true)
+
             if (data.length == 0){
                 noResultMessage.style.display = "block"
             } else {
                 noResultMessage.style.display = "none"
+
+                if (localStorage && storeLocalStorage) {
+                    localStorage.clear()
+                }
+
                 data.forEach(card => {
                     // create HTML for current card and insert it into index.html
                     const card_html = createCardHTML(index, card.name, card.imageURL)
@@ -67,9 +78,9 @@ function fillCardsList(api_url){
                     const status = card.status 
                     const variants = card.variants
                     card_data.push({index, name, description, imageURL, cost, power, abilities, status, variants})
-                    if (localStorage) {
+                    if (localStorage && storeLocalStorage) {
                         const jsonString = JSON.stringify({name, description, imageURL, cost, power, abilities, status, variants})
-                        localStorage.setItem(index, jsonString)    
+                        localStorage.setItem(index, jsonString)   
                     }   
 
                     index++;
@@ -77,6 +88,11 @@ function fillCardsList(api_url){
             }
         }).catch(err => {
             serverIssueMessage.style.display = "block"
+
+            // disable search and filter functionality 
+            enableSearchFilter(false)
+
+
             // Server problems so we get the data for cards from localStorage 
             for (var i = 0; i < localStorage.length; i++) {
                 const card = JSON.parse(localStorage.getItem(i))
@@ -96,6 +112,25 @@ function fillCardsList(api_url){
                 card_data.push({index, name, description, imageURL, cost, power, abilities, status, variants})
             }
         })
+}
+
+function enableSearchFilter(enable) {
+    if (enable) {
+        searchField.querySelector("input").disabled = false
+        filterButton.disabled = false
+        searchContainer.classList.remove("disabled")
+        filterButton.classList.remove("disabled")
+    } else {
+        searchField.querySelector("input").disabled = true
+        searchField.querySelector("input").value = ""
+        filterButton.disabled = true
+        searchContainer.classList.add("disabled")
+        filterButton.classList.add("disabled")
+        if (!filter_is_collapsed) {
+            console.log("collapsing filter")
+            switchFilter()
+        }
+    }
 }
 
 function handleImgLoadError(image) {
@@ -286,7 +321,6 @@ function enableScroll () {
 }
 
 // collapses and extends the filter container
-var filter_is_collapsed = true
 function switchFilter() {
     if (!filter_is_collapsed) {
         filterContainer.style.transition = "max-height 1s, border 0.3s 0.5s, margin 0.2s 0.6s, padding 0.2s 0.6s"
@@ -494,8 +528,7 @@ function applyFilter(search_field) {
             cardList.innerHTML = ""
             const url = "http://localhost:8000/cards/filter?search=" + search_string + "&cost=" + cost_string + "&power=" + power_string + "&ability=" + 
                         ability_string + "&status=" + status_string + "&sorting=" + sorting_string + "&direction=" + direction_string
-            console.log(url)
-            fillCardsList(url)
+            fillCardsList(url, false)
         }
     }
 }
