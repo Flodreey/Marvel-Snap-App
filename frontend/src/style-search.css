@@ -1,6 +1,5 @@
 #search-container {
     display: flex;
-    /* background-color: green; */
     align-items: center;
 }
 
@@ -34,6 +33,7 @@
     border: none;
 }
 
+/* the moving "Search" text */
 #search-field span {
     color: white;
     font-size: 30px;
@@ -94,11 +94,9 @@
     
 }
 
-/* @media screen and (max-width: 690px) {
-    #filter-container {
-        min-height: 650px
-    }
-} */
+#filter-container input {
+    display: none;
+}
 
 #filter-container .heading {
     font-size: 30px;
@@ -142,7 +140,6 @@
 }
 
 #sort-container h2 {
-    /* font-size: 30px; */
     font-size: 30px;
     white-space: nowrap;
 }
@@ -172,12 +169,6 @@
     #sort-container .radio-item {
         padding-inline: 25px;
     }
-}
-
-#filter-container input {
-    /* appearance: none;
-    margin: 0; */
-    display: none;
 }
 
 #sort-container input[type="radio"]:checked+label{
@@ -214,24 +205,6 @@
     margin-inline: 40px;
 }
 
-#filter-container input[type="checkbox"]:checked+label{
-    background-color: white;
-    color: black;
-    /* border-width: 4px;
-    font-size: 20px; */
-}
-
-/* #filter-container .check{
-    border: 1px solid white;
-    border-radius: 10px;
-    min-width: 30px;
-    padding: 3px;
-    text-align: center;
-    font-size: 18px;
-    margin-block: 10px;
-    scale: 1.2;
-} */
-
 #filter-container .check{
     border: 1px solid white;
     border-radius: 13px;
@@ -247,62 +220,9 @@
     white-space: nowrap;
 }
 
-@media screen and (max-width: 1000px) {
-    #ability-container .checkbox-container, #status-container .checkbox-container {
-        margin-inline: 25px !important;
-    }
-}
-
-@media screen and (max-width: 750px) {
-    #ability-container .check, #status-container .check {
-    font-size: clamp(12px, 2.3vw, 22px);
-}
-}
-
-#power-container .checkbox-container, #cost-container .checkbox-container {
-    /* background-color: rgba(0, 0, 255, 0.374); */
-}
-
-@media screen and (max-width: 1330px) {
-                    
-    #power-container .checkbox-container, #cost-container .checkbox-container{
-        margin-inline: 15px;
-    }
-}
-
-@media screen and (max-width: 1125px) {
-    #power-container .check, #cost-container .check {
-        min-width: none;
-        padding: 2px 6px;
-        margin-inline: 2px !important;
-        margin-block: 8px;
-    }
-}
-
-@media screen and (max-width: 1005px) {
-    #power-container .check, #cost-container .check {
-        min-width: none;
-        padding: 2px 4px;
-        margin-inline: 1px !important;
-        margin-block: 5px;
-    }
-}
-
-@media screen and (max-width: 880px) {
-
-    #power-container .check, #cost-container .check {
-        min-width: none;
-        padding: 2px 4px;
-        margin-inline: 1px !important;
-        margin-block: 5px;
-    }
-}
-
-@media screen and (max-width: 730px) {
-
-    #power-container .checkbox-container, #cost-container .checkbox-container{
-        margin-inline: 10px;
-    }
+#filter-container input[type="checkbox"]:checked+label{
+    background-color: white;
+    color: black;
 }
 
 #cost-container {
@@ -332,6 +252,57 @@
 
 #cost-container, #power-container, #ability-container, #status-container {
     height: fit-content;
+}
+
+@media screen and (max-width: 1000px) {
+    #ability-container .checkbox-container, #status-container .checkbox-container {
+        margin-inline: 25px !important;
+    }
+}
+
+@media screen and (max-width: 750px) {
+    #ability-container .check, #status-container .check {
+    font-size: clamp(12px, 2.3vw, 22px);
+    }
+}
+
+@media screen and (max-width: 1330px) {         
+    #power-container .checkbox-container, #cost-container .checkbox-container{
+        margin-inline: 15px;
+    }
+}
+
+@media screen and (max-width: 1125px) {
+    #power-container .check, #cost-container .check {
+        min-width: none;
+        padding: 2px 6px;
+        margin-inline: 2px !important;
+        margin-block: 8px;
+    }
+}
+
+@media screen and (max-width: 1005px) {
+    #power-container .check, #cost-container .check {
+        min-width: none;
+        padding: 2px 4px;
+        margin-inline: 1px !important;
+        margin-block: 5px;
+    }
+}
+
+@media screen and (max-width: 880px) {
+    #power-container .check, #cost-container .check {
+        min-width: none;
+        padding: 2px 4px;
+        margin-inline: 1px !important;
+        margin-block: 5px;
+    }
+}
+
+@media screen and (max-width: 730px) {
+    #power-container .checkbox-container, #cost-container .checkbox-container{
+        margin-inline: 10px;
+    }
 }
 
 #apply-button {

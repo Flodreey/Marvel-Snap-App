@@ -33,8 +33,6 @@ var filter_is_collapsed = true
 
 fillCardsList("http://localhost:8000/cards/", true)
 
-switchFilter()
-
 // creates the HTML code for one card that gets later inserted into index.html
 function createCardHTML(index, name, imageURL) {
     const card_html =   `<div class="card" onmouseenter="makeCardBigger(this)" onmouseleave ="makeCardNormal(this)" onclick="clickCard(this)">
@@ -336,7 +334,7 @@ function switchFilter() {
         filterContainer.style.padding = "0px 10px 0px 10px"
     } else {
         filterContainer.style.transition = "max-height 1s"
-        filterContainer.style.maxHeight = filterContainer.scrollHeight + "px"
+        filterContainer.style.maxHeight = (filterContainer.scrollHeight + 50) + "px"
         // filterContainer.style.maxHeight = "600px"
         filterContainer.style.border = "5px solid white"
         filterContainer.style.borderBottom = "none"
