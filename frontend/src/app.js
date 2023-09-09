@@ -33,6 +33,8 @@ var filter_is_collapsed = true
 
 fillCardsList("http://localhost:8000/cards/", true)
 
+switchFilter()
+
 // creates the HTML code for one card that gets later inserted into index.html
 function createCardHTML(index, name, imageURL) {
     const card_html =   `<div class="card" onmouseenter="makeCardBigger(this)" onmouseleave ="makeCardNormal(this)" onclick="clickCard(this)">
@@ -120,6 +122,8 @@ function enableSearchFilter(enable) {
         filterButton.disabled = false
         searchContainer.classList.remove("disabled")
         filterButton.classList.remove("disabled")
+        searchField.querySelector("input").classList.remove("not-allowed-cursor")
+        filterButton.classList.remove("not-allowed-cursor")
     } else {
         searchField.querySelector("input").disabled = true
         searchField.querySelector("input").value = ""
@@ -130,6 +134,8 @@ function enableSearchFilter(enable) {
             console.log("collapsing filter")
             switchFilter()
         }
+        searchField.querySelector("input").classList.add("not-allowed-cursor")
+        filterButton.classList.add("not-allowed-cursor")
     }
 }
 
@@ -330,8 +336,8 @@ function switchFilter() {
         filterContainer.style.padding = "0px 10px 0px 10px"
     } else {
         filterContainer.style.transition = "max-height 1s"
-        // filterContainer.style.maxHeight = filterContainer.scrollHeight + "px"
-        filterContainer.style.maxHeight = "600px"
+        filterContainer.style.maxHeight = filterContainer.scrollHeight + "px"
+        // filterContainer.style.maxHeight = "600px"
         filterContainer.style.border = "5px solid white"
         filterContainer.style.borderBottom = "none"
         filterContainer.style.margin = "0px 30px -30px 30px"
