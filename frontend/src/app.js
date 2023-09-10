@@ -121,8 +121,6 @@ function fillCardsList(api_url, storeLocalStorage){
     
             cardCount.querySelectorAll("span")[0].innerHTML = card_data.length
             cardCount.querySelectorAll("span")[1].innerHTML = total_card_count
-            console.log(card_data.length)
-            console.log(total_card_count)
         })
 
 }
@@ -247,7 +245,7 @@ bigCardImage.addEventListener("click", (e) => {e.stopPropagation()})
 bigCardName.addEventListener("click", (e) => {e.stopPropagation()})
 bigCardDescription.addEventListener("click", (e) => {e.stopPropagation()})
 variantButtonContainer.addEventListener("click", (e) => {e.stopPropagation()})
-document.querySelectorAll(".prev-next-buttons").forEach(button => {
+document.querySelectorAll(".prev-next-card-buttons").forEach(button => {
     button.addEventListener("click", (e) => {e.stopPropagation()})
 })
 

@@ -23,33 +23,31 @@
    flex-direction: row;
    align-items: center;
    justify-content: center;
-   
 }
 
-/* @media screen and (max-height: 400px) and (min-height: 300px) {
-    #card-information-container{
-        background-color: yellow;
-    }
-} */
+#big-card-image {
+    position: relative;
+    max-width: 500px;
+    min-width: 300px;
+    width: 75%;
+    height: 100%;
+    aspect-ratio: 500 / 650;
+    overflow: hidden;
+    object-fit: cover;
+    z-index: -1;
 
-#variant-button-container {
     /* background-color: red; */
 }
 
-#variant-button-container p {
-    /* background-color: #f1f1f1; */
-    opacity: 0.5;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    line-height: 43px;
-    vertical-align: middle;
-    margin: 70 0;
-    margin-right: -40px;
-    padding-left: 15px;
-    font-size: 50px;
-    font-family: Arial, Helvetica, sans-serif;
-    box-sizing: border-box;
+#big-card-image img{
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 125%;
+    max-height: 100%;
+
+    /* background-color: blue; */
 }
 
 .arrow-button-not-hover {
@@ -60,22 +58,49 @@
     background-color: #bbb;  
 }
 
-#variant-button-container p:hover {
+#variant-button-container {
+    position: absolute;
+    left: 0px;
+    top: 50%;
+    transform: translate(0, -50%);
+    width: fit-content;
+    height: fit-content;
+    z-index: 1;
+    /* background-color: green; */
+}
+
+#variant-button-container div {
+    /* background-color: #f1f1f1; */
+    opacity: 0.5;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    line-height: 43px;
+    vertical-align: middle;
+    padding-left: 15px;
+    font-size: 50px;
+    font-family: Arial, Helvetica, sans-serif;
+    box-sizing: border-box;
+}
+
+#variant-button-container div:hover {
     background-color: #bbb;
 }
 
-#variant-button-container p:first-child {
+#variant-button-container div:first-child {
+    margin-bottom: 70px;
     transform: rotate(90deg);
 }
 
-#variant-button-container p:last-child {
+#variant-button-container div:last-child {
+    margin-top: 70px;
     transform: rotate(-90deg);
 }
 
-.prev-next-buttons {
+.prev-next-card-buttons {
     width: 40px;
     height: 400px;
-    line-height: 240px;
+    line-height: 385px;
     vertical-align: middle;
     text-align: center;
     border-radius: 10px;
@@ -90,9 +115,8 @@
     box-sizing: border-box;
 }
 
-.prev-next-buttons:hover {
+.prev-next-card-buttons:hover {
     background-color: #bbb;
-    
 }
 
 #prev-card-button {
@@ -103,43 +127,19 @@
    right: 10px;
 }
 
-#big-card-image{
-    /* display: block;
-    max-height: 100%; */
-    /* float: left; */
-    /* max-width: 70%;
-    max-height: 100%; */
-    /* background-color:rgba(222, 184, 135, 0.297); */
-
-    max-width: 500px;
-    height: 100%;
-    aspect-ratio: 500 / 650;
-    overflow: hidden;
-    object-fit: cover;
-    z-index: -1;
-}
-
-#big-card-image img{
-    /* margin: -15px 0px 0px -80px; */
-    position: relative;
-    top: 50%;
-    left: 50%;
-    /* transform: translate(-50%, 0); */
-    transform: translate(-50%, -50%);
-    max-width: 125%;
-}
-
 #name-and-description{
     display: block;
-    /* background-color: rgba(0, 0, 255, 0.304); */
     max-width: 600px;
     /* float: left; */
     color: white;
     font-size: clamp(30px, 3vw, 100px);
     text-align: center;
+
+    /* background-color: rgba(0, 0, 255, 0.304); */
+
 }
 
-@media screen and (max-width: 1000px){   
+@media screen and (max-width: 1300px){   
     #card-information-container {
         flex-direction: column;
     }    
@@ -148,9 +148,19 @@
         margin: 0;
         padding: 0;
     }
+
+    #name-and-description {
+        margin-inline: 10px;
+        font-size: clamp(27px, 2vw, 100px);
+        /* background-color: rgba(0, 0, 255, 0.304); */
+    }
+
+    #big-card-description {
+        height: 70px;
+    }
 }
 
-@media screen and (max-height: 500px) and (min-height: 250px) {
+/* @media screen and (max-height: 500px) and (min-height: 250px) {
     #name-and-description{
         font-size: 2.5vw;
     }
@@ -160,4 +170,4 @@
     #name-and-description{
         font-size: 1.5vw;
     }
-}
+} */

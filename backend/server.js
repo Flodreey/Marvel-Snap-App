@@ -1,8 +1,5 @@
 const express = require("express")
 const axios = require("axios")
-const cheerio = require("cherio")
-const fs = require("fs")
-const async = require("async")
 
 const app = express()
 
