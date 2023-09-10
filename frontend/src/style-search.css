@@ -246,7 +246,7 @@
 }
 
 #ability-container .check, #status-container .check{
-    margin-inline: 2px;
+    margin-inline: 3px;
     width: 100px;
 }
 
@@ -258,11 +258,16 @@
     #ability-container .checkbox-container, #status-container .checkbox-container {
         margin-inline: 25px !important;
     }
+
+    #ability-container .check, #status-container .check {
+        margin-inline: 2px;
+    }
 }
 
 @media screen and (max-width: 750px) {
     #ability-container .check, #status-container .check {
-    font-size: clamp(12px, 2.3vw, 22px);
+        font-size: clamp(12px, 2.3vw, 22px);
+        padding: 3px 1px;
     }
 }
 

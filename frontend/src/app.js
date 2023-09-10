@@ -24,12 +24,14 @@ const powerContainer = document.getElementById("power-container")
 const abilityContainer = document.getElementById("ability-container")
 const statusContainer = document.getElementById("status-container")
 const filterWarning = document.getElementById("filter-warning")
+const cardCount = document.getElementById("card-count")
 
 // global variables
 var card_data = []
 var currently_looking_at = ""
 var variant_index = 0
 var filter_is_collapsed = true
+var total_card_count = 0
 
 fillCardsList("http://localhost:8000/cards/", true)
 
@@ -111,7 +113,18 @@ function fillCardsList(api_url, storeLocalStorage){
                 const variants = card.variants
                 card_data.push({index, name, description, imageURL, cost, power, abilities, status, variants})
             }
+        }).then(() => {
+            // set card-count element after the card container
+            if (storeLocalStorage) {
+                total_card_count = card_data.length
+            }
+    
+            cardCount.querySelectorAll("span")[0].innerHTML = card_data.length
+            cardCount.querySelectorAll("span")[1].innerHTML = total_card_count
+            console.log(card_data.length)
+            console.log(total_card_count)
         })
+
 }
 
 function enableSearchFilter(enable) {
