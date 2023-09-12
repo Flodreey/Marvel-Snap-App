@@ -52,8 +52,8 @@ Contributions and suggestions for improvement are always welcome!
 <br>
 
 <div align="center">
-  <img width="700" alt="Screenshot 3: Switch between variants" src="/readme-images/screenshot3.png">
-  <p>More card information when clicking on a card</p>
+  <img width="700" alt="Screenshot 3: Switch between variants" src="/readme-images/screenshot3.jpg">
+  <p>Switch between variants</p>
 </div>
 
 <br>
