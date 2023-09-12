@@ -6,17 +6,25 @@
 Marvel Snap is an outstanding strategic card game. This project retrieves information about Marvel Snap cards, including their names, powers, costs, abilities and more, from `https://marvelsnapzone.com/getinfo/?searchtype=cards&searchcardstype=true`. The gathered data is then elegantly presented, allowing a great browsing experience. Additionally the website offers users targeted card searches and the application of filters and sorting preferences within the card database.
 
 ## Quickstart
-Clone the project to your system: 
+1) Clone the project to your system: 
 ```bash
 https://github.com/Flodreey/Marvel-Snap-App.git
 ```
-In your terminal navigate to the "backend"-folder of the project and run the following command:
+
+<br>
+
+2) In your terminal navigate to the "backend"-folder of the project and run the following commands:
+```bash
+npm install
+```
 ```bash
 npm run start
 ```
-which will run the script "start" and start the backend server (If you don't have node yet, download it here: [Node.js](https://nodejs.org/de)).
+which will install all node dependecies and start the backend server (If you don't have node yet, download it here: [Node.js](https://nodejs.org/)).
 
-Now you can open the "index.html" file in the "frontend"-folder and view the card database.
+<br>
+
+3) Now you can open the "index.html" file in the "frontend"-folder and view the card database.
 
 <!--## Frontend
 
@@ -44,7 +52,15 @@ Contributions and suggestions for improvement are always welcome!
 <br>
 
 <div align="center">
-  <img width="700" alt="Screenshot 3: Search for cards" src="/readme-images/screenshot3.png">
+  <img width="700" alt="Screenshot 3: Switch between variants" src="/readme-images/screenshot3.png">
+  <p>More card information when clicking on a card</p>
+</div>
+
+<br>
+<br>
+
+<div align="center">
+  <img width="700" alt="Screenshot 4: Search for cards" src="/readme-images/screenshot4.png">
   <p>Search for cards</p>
 </div>
 
@@ -52,6 +68,6 @@ Contributions and suggestions for improvement are always welcome!
 <br>
 
 <div align="center">
-  <img width="700" alt="Screenshot 4: Applying filters and sorting preferences" src="/readme-images/screenshot4.png">
+  <img width="700" alt="Screenshot 5: Applying filters and sorting preferences" src="/readme-images/screenshot5.png">
   <p>Applying filters and sorting preferences</p>
 </div>
