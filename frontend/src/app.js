@@ -203,8 +203,13 @@ function fillCardInfoPage(card) {
     // set name of card information page
     bigCardName.innerHTML = card.name
 
-    // set description of card information page and make "On Reveal:" and "Ongoing:" bold
-    const card_description = card.description.replace("On Reveal:", "<strong>On Reveal:</strong>").replace("Ongoing:", "<strong>Ongoing:</strong>")
+    // set description of card information page and make "On Reveal:", "Ongoing:", "Activate:", "Game Start:" and "End of Turn:" bold
+    const card_description = card.description
+                                .replace("On Reveal:", "<strong>On Reveal:</strong>")
+                                .replace("Ongoing:", "<strong>Ongoing:</strong>")
+                                .replace("Activate:", "<strong>Activate:</strong>")
+                                .replace("Game Start:", "<strong>Game Start:</strong>")
+                                .replace("End of Turn:", "<strong>End of Turn:</strong>")
     bigCardDescription.innerHTML = card_description
 
     if (card.variants.length == 1) {

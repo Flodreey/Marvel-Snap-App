@@ -20,7 +20,7 @@ function main() {
     axios(MARVEL_SNAP_ZONE_API)
         .then(response => {
             //console.log(response.data.success.cards[0])
-            response.data.success.cards.forEach(card => {
+            response.data.success.cards.forEach((card, index) => {
                 var name = card.name
 
                 var description = "None"
@@ -49,6 +49,12 @@ function main() {
                     abilities.push("ongoing")
                 if (description.includes("On Reveal:")) 
                     abilities.push("on-reveal")
+                if (description.includes("Activate:"))
+                    abilities.push("activate")
+                if (description.includes("Game Start:"))
+                    abilities.push("game-start")
+                if (description.includes("End of Turn:"))
+                    abilities.push("end-of-turn")
                 if (abilities.length == 0) 
                     abilities.push("other")
 
@@ -57,6 +63,8 @@ function main() {
                 card.variants.forEach(v => {
                     variants.push(v.art)
                 })
+
+                //console.log(`${index}: ${name}`)
 
                 cards.push({name, description, imageURL, cost, power, abilities, status, variants})
             })
