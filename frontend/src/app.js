@@ -151,16 +151,6 @@ function enableSearchFilter(enable) {
 function handleImgLoadError(image) {
     // if image of one card could not be loaded (maybe bc doesn't exist) then use question mark image instead
     image.src="images/Question-Mark.png"
-    image.width = 220
-
-    // remove class cropped and add class unknown-image
-    const cropped_divs = document.querySelectorAll(".cropped")
-    cropped_divs.forEach(div => {
-        if (div.querySelector("img") === image) {
-            div.classList.remove("cropped")
-            div.classList.add("unknown-image")
-        }
-    })
 
     // set the imageURL of card with unknown image in card_data to ""
     const card_index = image.dataset.cardindex
@@ -327,7 +317,20 @@ function clickNextVariantButton(direction) {
         if (variant_index == -1) 
             variant_index = current_card.variants.length - 1
     }
-    bigCardImage.querySelector("img").src = getCardData(currently_looking_at).variants[variant_index]
+    
+    let newURL = getCardData(currently_looking_at).variants[variant_index]
+    checkImage(newURL).then(isValid => {
+        bigCardImage.querySelector("img").src = isValid ? newURL : "images/Question-Mark.png"
+    })
+}
+
+function checkImage(url) {
+    return new Promise((resolve, reject) => {
+        const img = new Image()
+        img.onload = () => resolve(true)
+        img.onerror = () => resolve(false)
+        img.src = url
+    })
 }
 
 function disableScroll () {
