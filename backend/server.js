@@ -12,7 +12,7 @@ const MARVEL_SNAP_ZONE_API = "https://marvelsnapzone.com/getinfo/?searchtype=car
 var cards = []
 
 app.listen(PORT, () => {
-    console.log("server running on PORT ", PORT)
+    console.log(`server running on PORT ${PORT} \n`)
     main()
 })
 
@@ -73,6 +73,7 @@ function main() {
 }
 
 app.get('/cards', (req, res) => {
+    console.log("client called endpoint: /cards")
     res.json(cards)
 });
 
@@ -135,6 +136,8 @@ function sort_function(card1, card2, sorting, direction) {
 }
 
 app.get("/cards/filter", (req, res) => {
+    console.log("client called endpoint: /cards/filter")
+
     let search_string = req.query.search
     let cost_string = req.query.cost 
     let power_string = req.query.power 

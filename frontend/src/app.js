@@ -125,6 +125,13 @@ function fillCardsList(api_url, storeLocalStorage){
 
 }
 
+async function preloadImages(urlArray) {
+    urlArray.forEach(url => {
+        const img = new Image()
+        img.src = url
+    })
+}
+
 function enableSearchFilter(enable) {
     if (enable) {
         searchField.querySelector("input").disabled = false
@@ -206,6 +213,7 @@ function fillCardInfoPage(card) {
         variantButtonContainer.style.display = "none"
     } else {
         variantButtonContainer.style.display = "block"
+        preloadImages(card.variants)
     }
     currently_looking_at = card.name
     variant_index = 0
