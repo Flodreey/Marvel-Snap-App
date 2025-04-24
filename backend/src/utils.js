@@ -1,3 +1,12 @@
+export async function checkImageURL(imageURL) {
+    try {
+        const imageResponse = await fetch(imageURL, { method: "HEAD" })
+        return imageResponse.ok
+    } catch(error) {
+        return false
+    }
+}
+
 export function filter_function(card, search, costs, powers, abilities, status) {
     let passed = true
 
