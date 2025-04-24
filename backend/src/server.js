@@ -54,9 +54,33 @@ async function mapCardsFromAPI(cardsFromAPI, makeImageChecks = true) {
             imageURL = cardFromAPI.art
         }
 
+        let cost = cardFromAPI.cost
+        
+        let power = cardFromAPI.power
+
+        let status = cardFromAPI.status
+
+        var abilities = [] 
+        cardFromAPI.tags.forEach(t => {
+        if (t.tag === "No Ability")
+            abilities.push("no-ability")
+        })
+        if (description.includes("Ongoing:")) 
+            abilities.push("ongoing")
+        if (description.includes("On Reveal:")) 
+            abilities.push("on-reveal")
+        if (description.includes("Activate:"))
+            abilities.push("activate")
+        if (description.includes("Game Start:"))
+            abilities.push("game-start")
+        if (description.includes("End of Turn:"))
+            abilities.push("end-of-turn")
+        if (abilities.length == 0) 
+            abilities.push("other")
+
         let variants = [imageURL, ...cardFromAPI.variants.map(v => v.art)]
 
-        return {name, description, imageURL, variants}
+        return {name, description, imageURL, cost, power, status, abilities, variants}
     })
 
     return Promise.all(mappedPromiseCards)
@@ -65,16 +89,22 @@ async function mapCardsFromAPI(cardsFromAPI, makeImageChecks = true) {
 app.get('/cards', async (req, res) => {
     console.log(`client called endpoint: ${req.url}`)
 
+    let result = null
     if (cachedCards && (Date.now() - cachedTimestamp) < CACHE_DURATION) {
         console.log("Serving cards from cache")
-        return res.json(cachedCards)
+        result = cachedCards
+    } else {
+        console.log("Cache expired or empty. Fetching fresh data...")
+        result = await getCardsFromAPI()
     }
 
-    console.log("Cache expired or empty. Fetching fresh data...")
-
-    const cards = await getCardsFromAPI()
-
-    res.json(cards)
+    const clientCards = result.map(card => ({
+        name: card.name, 
+        description: card.description,
+        imageURL: card.imageURL,
+        variants: card.variants
+    }))
+    res.json(clientCards)
 });
 
 app.get("/cards/filter", async (req, res) => {
@@ -100,5 +130,12 @@ app.get("/cards/filter", async (req, res) => {
     
     cards_filtered = cards_filtered.sort((c1, c2) => sort_function(c1, c2, sorting_string, direction_string))
 
-    res.json(cards_filtered)
+    const clientCards = cards_filtered.map(card => ({
+        name: card.name, 
+        description: card.description,
+        imageURL: card.imageURL,
+        variants: card.variants
+    }))
+
+    res.json(clientCards)
 })
