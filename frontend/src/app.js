@@ -125,11 +125,18 @@ function fillCardsList(api_url, storeLocalStorage){
 
 }
 
-async function preloadImages(urlArray) {
-    urlArray.forEach(url => {
-        const img = new Image()
-        img.src = url
+async function preloadAndFilterImages(urlArray) {
+    const promiseUrlArray = urlArray.map(url => {
+        return new Promise(resolve => {
+            const img = new Image()
+            img.onload = () => resolve(url)
+            img.onerror = () => resolve("")
+            img.src = url
+        })
     })
+
+    const result = await Promise.all(promiseUrlArray)
+    return result.filter(url => url !== "")
 }
 
 function enableSearchFilter(enable) {
@@ -187,7 +194,7 @@ function getCardData(card_name) {
     return card_data.find(card => card.name === card_name)
 }
 
-function fillCardInfoPage(card) {
+async function fillCardInfoPage(card) {
     // set image of card information page
     // if card has an image (not question mark image) then show that image on card information page otherwise show no image
     if (card.imageURL != "") {
@@ -212,8 +219,8 @@ function fillCardInfoPage(card) {
     if (card.variants.length == 1) {
         variantButtonContainer.style.display = "none"
     } else {
-        variantButtonContainer.style.display = "block"
-        preloadImages(card.variants)
+        card.variants = await preloadAndFilterImages(card.variants)
+        variantButtonContainer.style.display = card.variants.length == 1 ? "none" : "block"
     }
     currently_looking_at = card.name
     variant_index = 0

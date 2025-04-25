@@ -78,7 +78,19 @@ async function mapCardsFromAPI(cardsFromAPI, makeImageChecks = true) {
         if (abilities.length == 0) 
             abilities.push("other")
 
-        let variants = [imageURL, ...cardFromAPI.variants.map(v => v.art)]
+        let variants = cardFromAPI.variants.map(v => v.art)
+
+        // if (makeImageChecks) {
+        //     const promiseVariants = variants.map(async variantURL => {
+        //         const isValid = await checkImageURL(variantURL)
+        //         return isValid ? variantURL : ""
+        //     })
+        //     variants = await Promise.all(promiseVariants)
+        //     variants = variants.filter(v => v !== "")
+        //     console.log(`checked variants of ${name}`)
+        // }   
+
+        variants = [imageURL, ...variants]
 
         return {name, description, imageURL, cost, power, status, abilities, variants}
     })
