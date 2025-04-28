@@ -11,22 +11,22 @@ const PORT = 8000
 const MARVEL_SNAP_ZONE_API = "https://marvelsnapzone.com/getinfo/?searchtype=cards&searchcardstype=true"
 
 let cachedCards = null
-let cachedTimestamp = null
-const CACHE_DURATION = 10 * 60 * 1000
+const CACHE_DURATION = 24 * 60 * 60 * 1000 // renewing cache every 24 hours
+
+setInterval(() => getCardsFromAPI(), CACHE_DURATION) 
 
 app.listen(PORT, async () => {
-    console.log(`starting server and filling cache...\n`)
+    console.log(`server running on PORT ${PORT} \n`)
 
     await getCardsFromAPI()
-
-    console.log(`server running on PORT ${PORT} \n`)
 })
 
 async function getCardsFromAPI(makeImageChecks = true) {
     try {
+        console.log("Fetching fresh data from API")
         const response = await axios(MARVEL_SNAP_ZONE_API)
         cachedCards = await mapCardsFromAPI(response.data.success.cards, makeImageChecks)
-        cachedTimestamp = Date.now()
+        console.log("✅ Done \n")
         return cachedCards
     } catch (error) {
         console.log("Error fetching cards from API:")
@@ -101,16 +101,7 @@ async function mapCardsFromAPI(cardsFromAPI, makeImageChecks = true) {
 app.get('/cards', async (req, res) => {
     console.log(`client called endpoint: ${req.url}`)
 
-    let result = null
-    if (cachedCards && (Date.now() - cachedTimestamp) < CACHE_DURATION) {
-        console.log("Serving cards from cache")
-        result = cachedCards
-    } else {
-        console.log("Cache expired or empty. Fetching fresh data...")
-        result = await getCardsFromAPI()
-    }
-
-    const clientCards = result.map(card => ({
+    const clientCards = cachedCards.map(card => ({
         name: card.name, 
         description: card.description,
         imageURL: card.imageURL,
@@ -122,14 +113,6 @@ app.get('/cards', async (req, res) => {
 app.get("/cards/filter", async (req, res) => {
     console.log(`client called endpoint: ${req.url}`)
 
-    let cards = []
-
-    if (cachedCards && (Date.now() - cachedTimestamp) < CACHE_DURATION) {
-        cards = cachedCards
-    } else {
-        cards = await getCardsFromAPI(false)
-    }
-
     let search_string = req.query.search ?? "all"
     let cost_string = req.query.cost ?? "all"
     let power_string = req.query.power ?? "all"
@@ -138,7 +121,7 @@ app.get("/cards/filter", async (req, res) => {
     let sorting_string = req.query.sorting ?? "name"
     let direction_string = req.query.direction ?? "up"
 
-    let cards_filtered = cards.filter(card => filter_function(card, search_string, cost_string, power_string, ability_string, status_string))
+    let cards_filtered = cachedCards.filter(card => filter_function(card, search_string, cost_string, power_string, ability_string, status_string))
     
     cards_filtered = cards_filtered.sort((c1, c2) => sort_function(c1, c2, sorting_string, direction_string))
 
