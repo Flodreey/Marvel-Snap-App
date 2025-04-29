@@ -2,7 +2,7 @@ import express from "express"
 import axios from "axios"
 import cors from "cors"
 
-import { checkImageURL, filter_function, sort_function } from "./utils.js"
+import { checkImageURL, filterAndSort } from "./utils.js"
 
 const app = express()
 app.use(cors())
@@ -113,18 +113,8 @@ app.get('/cards', async (req, res) => {
 app.get("/cards/filter", async (req, res) => {
     console.log(`client called endpoint: ${req.url}`)
 
-    let search_string = req.query.search ?? "all"
-    let cost_string = req.query.cost ?? "all"
-    let power_string = req.query.power ?? "all"
-    let ability_string = req.query.ability ?? "all"
-    let status_string = req.query.status ?? "all"
-    let sorting_string = req.query.sorting ?? "name"
-    let direction_string = req.query.direction ?? "up"
-
-    let cards_filtered = cachedCards.filter(card => filter_function(card, search_string, cost_string, power_string, ability_string, status_string))
+    let cards_filtered = filterAndSort(cachedCards, req.query)
     
-    cards_filtered = cards_filtered.sort((c1, c2) => sort_function(c1, c2, sorting_string, direction_string))
-
     const clientCards = cards_filtered.map(card => ({
         name: card.name, 
         description: card.description,

@@ -36,105 +36,106 @@ function greyOutApplyButton(enable){
     }
 }
 
-function applyFilter(search_field) {
-    if (!filter_greyed_out || search_field) {
-        greyOutApplyButton(true)
-
-        let search_string = ""
-        let cost_string = ""
-        let power_string = ""
-        let ability_string = ""
-        let status_string = ""
-        let sorting_string = ""
-        let direction_string = ""
-
-        // read search field value
-        search_string = searchField.querySelector("input").value
-
-        // read checked cost buttons
-        if (costContainer.querySelector("#cost-all").checked) {
-            cost_string = "all"
-        } else {
-            costContainer.querySelectorAll(".checkbox-container input").forEach(inp => {
-                if (inp.checked) {
-                    // every id has format cost0, cost1, cost2, ... so we just cut away cost to get the number
-                    cost_string += inp.id.substring(4,inp.id.length) + ","
-                }
-            })
-            if (cost_string.includes("6,")){
-                cost_string += "7,8"
-            }
-        }
-        
-        // read checked power buttons
-        if (powerContainer.querySelector("#power-all").checked) {
-            power_string = "all"
-        } else {
-            powerContainer.querySelectorAll(".checkbox-container input").forEach(inp => {
-                if (inp.checked) {
-                    // every id has format power0, power1, power2, ... so we just cut away cost to get the number
-                    power_string += inp.id.substring(5,inp.id.length) + ","
-                }
-            })
-            if (power_string.includes("-,")){
-                for (let i = -10; i <= -1; i++)
-                    power_string += i.toString() + ","
-            }
-            if (power_string.includes("+,")){
-                for (let i = 11; i <= 20; i++)
-                    power_string += i.toString() + ","
-            }
-            power_string = power_string.replaceAll("+,", "").replaceAll("-,", "")
-        }
-
-        // read checked ability buttons
-        if (abilityContainer.querySelector("#ability-all").checked) {
-            ability_string = "all"
-        } else {
-            abilityContainer.querySelectorAll(".checkbox-container input").forEach(inp => {
-                if (inp.checked){
-                    ability_string += inp.id + "," 
-                }
-            })
-        }
-
-        // read checked status buttons
-        if (statusContainer.querySelector("#status-all").checked) {
-            status_string = "all"
-        } else {
-            statusContainer.querySelectorAll(".checkbox-container input").forEach(inp => {
-                if (inp.checked){
-                    status_string = inp.id + ","
-                }
-            })
-        }
-
-        // read sorting preference
-        const nameRadio = document.getElementById("name")
-        const costRadio = document.getElementById("cost")
-        const powerRadio = document.getElementById("power")
-        if (nameRadio.checked == true) 
-            sorting_string = "name"
-        else if (costRadio.checked == true) 
-            sorting_string = "cost"
-        else if (powerRadio.checked == true) 
-            sorting_string = "power"
-        
-        // read direction of sorting preference
-        if (arrowPointingDown) 
-            direction_string = "down"
-        else 
-            direction_string = "up"
-
-        if (cost_string === "" || power_string === "" || ability_string === "" || status_string === "") {
-            filterWarning.querySelector("p").style.display = "block"
-        } else {
-            filterWarning.querySelector("p").style.display = "none"
-
-            cardList.innerHTML = ""
-            const url = "http://localhost:8000/cards/filter?search=" + search_string + "&cost=" + cost_string + "&power=" + power_string + "&ability=" + 
-                        ability_string + "&status=" + status_string + "&sorting=" + sorting_string + "&direction=" + direction_string
-            fillCardsList(url, false)
-        }
+function applyFilter(isSearchField) {
+    if (filter_greyed_out && !isSearchField) {
+        return 
     }
+
+    greyOutApplyButton(true)
+
+    const url = new URL("http://localhost:8000/cards/filter")
+
+    // read search field value
+    const searchString = searchField.querySelector("input").value.trim()
+    if (searchString) {
+        url.searchParams.set("search", searchString)
+    }
+
+    // read checked cost buttons
+    const costArray = readCheckedFilterInputs("cost")
+    if (costArray) {
+        if (costArray.includes("6")) costArray.push("7", "8", "9", "10")
+        url.searchParams.set("cost", costArray.join(","))
+    }
+
+    // read checked power buttons
+    const powerArray = readCheckedFilterInputs("power")
+    if (powerArray) {
+        if (powerArray.includes("-")) powerArray.splice(powerArray.indexOf("-"), 1, "-10", "-9", "-8", "-7", "-6", "-5", "-4", "-3", "-2", "-1")
+        if (powerArray.includes("+")) powerArray.splice(powerArray.indexOf("+"), 1, "11", "12", "13", "14", "15", "16", "17", "18", "19", "20")
+
+        url.searchParams.set("power", powerArray.join(","))
+    }
+
+    // read checked ability buttons
+    const abilityArray = readCheckedFilterInputs("ability")
+    if (abilityArray) {
+        url.searchParams.set("ability", abilityArray.join(","))
+    }
+
+    // read checked status buttons
+    const statusArray = readCheckedFilterInputs("status")
+    if (statusArray) {
+        url.searchParams.set("status", statusArray.join(","))
+    }
+
+    if (costArray?.length === 0 || powerArray?.length === 0 || abilityArray?.length === 0 || statusArray?.length === 0) {
+        filterWarning.querySelector("p").style.display = "block"
+        return
+    } else {
+        filterWarning.querySelector("p").style.display = "none"
+    }
+
+    // read sorting preference
+    const sortingString = getSortingChoice()
+    if (sortingString && sortingString !== "name") {
+        url.searchParams.set("sorting", sortingString) // only setting parameter to "cost" or "power" bc "name" is default
+    }
+
+    // read direction of sorting preference
+    if (arrowPointingDown) {
+        url.searchParams.set("direction", "down") // only setting parameter to "down" bc "up" is default
+    }
+
+    cardList.innerHTML = ""
+    fillCardsList(url.toString(), false)
+}
+
+function readCheckedFilterInputs(category) {
+
+    let categoryContainer = null
+    let allInputSelector = null
+
+    switch(category) {
+        case "cost": 
+            categoryContainer = costContainer
+            allInputSelector = "#cost-all"
+            break
+        case "power":
+            categoryContainer = powerContainer
+            allInputSelector = "#power-all"
+            break
+        case "ability":
+            categoryContainer = abilityContainer
+            allInputSelector = "#ability-all"
+            break
+        case "status":
+            categoryContainer = statusContainer
+            allInputSelector = "#status-all"
+            break
+    }
+
+    if (categoryContainer.querySelector(allInputSelector).checked) {
+        return null
+    }
+    return Array.from(categoryContainer.querySelectorAll(".checkbox-container input"))
+            .filter(inp => inp.checked)
+            .map(inp => inp.dataset.value)
+}
+
+function getSortingChoice() {
+    if (document.getElementById("name").checked) return "name"
+    if (document.getElementById("cost").checked) return "cost"
+    if (document.getElementById("power").checked) return "power"
+    return null
 }
