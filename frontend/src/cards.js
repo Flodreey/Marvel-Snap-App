@@ -1,83 +1,70 @@
 
 fillCardsList(backendURL, true)
 
+async function getCardsFromBackend(api_url) {
+    try {
+        const response = await fetch(api_url)
+        const backendCards = await response.json() 
+        return { cards: backendCards, hasErrorHappened: false }
+    } catch(error) {
+        let localStorageCards = []
+        for (let i = 0; i < localStorage.length; i++) {
+            localStorageCards.push(JSON.parse(localStorage.getItem(i)))
+        }
+        return { cards: localStorageCards, hasErrorHappened: true }
+    }
+}
+
 // fetches card data from server and fills cardList element in index.html with all card's HTML
-function fillCardsList(api_url, storeLocalStorage){
+async function fillCardsList(api_url, isSavingToLocalStorage) {
+    const { cards, hasErrorHappened } = await getCardsFromBackend(api_url)
+
+    console.log(`hasErrorHappened: ${hasErrorHappened}`)
+
+    if (hasErrorHappened) {
+        serverIssueMessage.style.display = "block"
+
+        // disable search and filter functionality 
+        enableSearchFilter(false)
+    } else {
+        // enable search and filter functionality 
+        enableSearchFilter(true)
+        
+        if (cards.length === 0) {
+            noResultMessage.style.display = "block"
+            return
+        }
+        noResultMessage.style.display = "none"
+   
+        if (isSavingToLocalStorage && localStorage) {
+            localStorage.clear()
+        }
+    }
+
     card_data = []
-    var index = 0
-    fetch(api_url)
-        .then(response => response.json())
-        .then(data => {
-            // enable search and filter functionality 
-            enableSearchFilter(true)
+    cards.forEach((card, index) => {
+        // create HTML for current card and insert it into index.html
+        const card_html = createCardHTML(index, card.name, card.imageURL)
+        cardList.insertAdjacentHTML("beforeend", card_html)
 
-            if (data.length == 0){
-                noResultMessage.style.display = "block"
-            } else {
-                noResultMessage.style.display = "none"
+        const currentCardToStore = {
+            name: card.name,
+            description: card.description,
+            imageURL: card.imageURL,
+            variants: card.variants
+        }
+        card_data.push({index, ...currentCardToStore})
 
-                if (localStorage && storeLocalStorage) {
-                    localStorage.clear()
-                }
+        if (!hasErrorHappened && isSavingToLocalStorage && localStorage) {
+            const jsonString = JSON.stringify(currentCardToStore)
+            localStorage.setItem(index, jsonString)
+        }
+    })
 
-                data.forEach(card => {
-                    // create HTML for current card and insert it into index.html
-                    const card_html = createCardHTML(index, card.name, card.imageURL)
-                    cardList.insertAdjacentHTML("beforeend", card_html)
-
-                    // store data from server in card_data and in localStorage (so that application works also if server problems)
-                    const name = card.name 
-                    const description = card.description
-                    const imageURL = card.imageURL 
-                    const cost = card.cost 
-                    const power = card.power 
-                    const abilities = card.abilities 
-                    const status = card.status 
-                    const variants = card.variants
-                    card_data.push({index, name, description, imageURL, cost, power, abilities, status, variants})
-                    if (localStorage && storeLocalStorage) {
-                        const jsonString = JSON.stringify({name, description, imageURL, cost, power, abilities, status, variants})
-                        localStorage.setItem(index, jsonString)   
-                    }   
-
-                    index++;
-                })
-            }
-        }).catch(err => {
-            serverIssueMessage.style.display = "block"
-
-            // disable search and filter functionality 
-            enableSearchFilter(false)
-
-
-            // Server problems so we get the data for cards from localStorage 
-            for (var i = 0; i < localStorage.length; i++) {
-                const card = JSON.parse(localStorage.getItem(i))
-
-                const card_html = createCardHTML(i, card.name, card.imageURL)
-                cardList.insertAdjacentHTML("beforeend", card_html)
-
-                const index = i
-                const name = card.name 
-                const description = card.description
-                const imageURL = card.imageURL 
-                const cost = card.cost 
-                const power = card.power 
-                const abilities = card.abilities 
-                const status = card.status 
-                const variants = card.variants
-                card_data.push({index, name, description, imageURL, cost, power, abilities, status, variants})
-            }
-        }).then(() => {
-            // set card-count element after the card container
-            if (storeLocalStorage) {
-                total_card_count = card_data.length
-            }
-    
-            cardCount.querySelectorAll("span")[0].innerHTML = card_data.length
-            cardCount.querySelectorAll("span")[1].innerHTML = total_card_count
-        })
-
+    cardCount.querySelectorAll("span")[0].innerHTML = cards.length
+    if (isSavingToLocalStorage) {
+        cardCount.querySelectorAll("span")[1].innerHTML = cards.length
+    }
 }
 
 async function fillCardInfoPage(card) {
