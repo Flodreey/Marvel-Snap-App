@@ -43,7 +43,7 @@ function applyFilter(isSearchField) {
 
     greyOutApplyButton(true)
 
-    const url = new URL("http://localhost:8000/cards/filter")
+    const url = new URL(backendURL)
 
     // read search field value
     const searchString = searchField.querySelector("input").value.trim()

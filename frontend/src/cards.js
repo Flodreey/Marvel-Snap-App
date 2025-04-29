@@ -1,5 +1,5 @@
 
-fillCardsList("http://localhost:8000/cards/", true)
+fillCardsList(backendURL, true)
 
 // fetches card data from server and fills cardList element in index.html with all card's HTML
 function fillCardsList(api_url, storeLocalStorage){

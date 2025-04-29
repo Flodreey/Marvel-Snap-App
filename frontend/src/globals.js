@@ -27,6 +27,7 @@ const filterWarning = document.getElementById("filter-warning")
 const cardCount = document.getElementById("card-count")
 
 // global variables
+const backendURL = "http://localhost:8000/cards"
 let card_data = []
 let currently_looking_at = ""
 let variant_index = 0
