@@ -92,7 +92,7 @@ async function mapCardsFromAPI(cardsFromAPI, makeImageChecks = true) {
 
         variants = [imageURL, ...variants]
 
-        return {name, description, imageURL, cost, power, status, abilities, variants}
+        return {name, description, cost, power, status, abilities, variants}
     })
 
     return Promise.all(mappedPromiseCards)
@@ -106,7 +106,6 @@ app.get('/cards', async (req, res) => {
     const clientCards = cards_filtered.map(card => ({
         name: card.name, 
         description: card.description,
-        imageURL: card.imageURL,
         variants: card.variants
     }))
     res.json(clientCards)

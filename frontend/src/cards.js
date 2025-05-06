@@ -19,8 +19,6 @@ async function getCardsFromBackend(api_url) {
 async function fillCardsList(api_url, isSavingToLocalStorage) {
     const { cards, hasErrorHappened } = await getCardsFromBackend(api_url)
 
-    console.log(`hasErrorHappened: ${hasErrorHappened}`)
-
     if (hasErrorHappened) {
         serverIssueMessage.style.display = "block"
 
@@ -44,13 +42,12 @@ async function fillCardsList(api_url, isSavingToLocalStorage) {
     card_data = []
     cards.forEach((card, index) => {
         // create HTML for current card and insert it into index.html
-        const card_html = createCardHTML(index, card.name, card.imageURL)
+        const card_html = createCardHTML(index, card.name, card.variants[0])
         cardList.insertAdjacentHTML("beforeend", card_html)
 
         const currentCardToStore = {
             name: card.name,
             description: card.description,
-            imageURL: card.imageURL,
             variants: card.variants
         }
         card_data.push({index, ...currentCardToStore})
@@ -70,9 +67,9 @@ async function fillCardsList(api_url, isSavingToLocalStorage) {
 async function fillCardInfoPage(card) {
     // set image of card information page
     // if card has an image (not question mark image) then show that image on card information page otherwise show no image
-    if (card.imageURL != "") {
+    if (card.variants[0] != "") {
         bigCardImage.style.display = "block"
-        bigCardImage.querySelector("img").src = card.imageURL
+        bigCardImage.querySelector("img").src = card.variants[0]
     } else {
         bigCardImage.style.display = "none"
     }

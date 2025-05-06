@@ -46,5 +46,5 @@ function handleImgLoadError(image) {
 
     // set the imageURL of card with unknown image in card_data to ""
     const card_index = image.dataset.cardindex
-    card_data[card_index].imageURL = ""
+    card_data[card_index].variants[0] = ""
 }
