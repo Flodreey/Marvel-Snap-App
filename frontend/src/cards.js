@@ -62,6 +62,8 @@ async function fillCardsList(api_url, isSavingToLocalStorage) {
     if (isSavingToLocalStorage) {
         cardCount.querySelectorAll("span")[1].innerHTML = cards.length
     }
+
+    handleQueryParams()
 }
 
 async function fillCardInfoPage(card) {
@@ -110,6 +112,7 @@ function clickNextCardButton(direction) {
             next_card = card_data[current_card.index - 1]
     }
 
+    navigateToCardURL(next_card.name)
     fillCardInfoPage(next_card)
 }
 

@@ -27,16 +27,17 @@ function makeCardNormal(card){
 }
 
 // executed when card gets clicked -> opens card information page for that card
-function clickCard(card){
+function clickCard(cardElement){
     // make card information page visible and background blurry
     cardInformationBackground.style.display = "block"
     mainElement.style.filter = "blur(5px)"
 
     disableScroll()
     
-    const card_name = card.querySelector(".card-name").innerHTML
+    const card_name = cardElement.querySelector(".card-name").innerHTML
     const clicked_card = getCardData(card_name)
 
+    navigateToCardURL(card_name)
     fillCardInfoPage(clicked_card)
 }
 
