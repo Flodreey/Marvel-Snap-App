@@ -25,6 +25,17 @@ function rotateDirArrow() {
     greyOutApplyButton(false)
 }
 
+function setDirArrow(direction) {
+    switch(direction) {
+        case "up":
+            if (arrowPointingDown) rotateDirArrow()
+            break
+        case "down":
+            if (!arrowPointingDown) rotateDirArrow()
+            break
+    }
+}
+
 function greyOutApplyButton(enable){
     filter_greyed_out = enable
     if (enable){
@@ -104,7 +115,7 @@ function applyFilter(isSearchField) {
         // console.log(`pushing state landing url`)
         navigateToLandingURL()
     }
-
+    
     cardList.innerHTML = ""
     fillCardsList(url.toString(), false)
 }
