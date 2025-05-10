@@ -97,6 +97,14 @@ function applyFilter(isSearchField) {
         url.searchParams.set("direction", "down") // only setting parameter to "down" bc "up" is default
     }
 
+    if (url.search) {
+        // console.log(`pushing state ${url.search}`)
+        window.history.pushState({}, "", url.search)
+    } else {
+        // console.log(`pushing state landing url`)
+        navigateToLandingURL()
+    }
+
     cardList.innerHTML = ""
     fillCardsList(url.toString(), false)
 }

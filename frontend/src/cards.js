@@ -1,6 +1,3 @@
-
-fillCardsList(backendURL, true)
-
 async function getCardsFromBackend(api_url) {
     try {
         const response = await fetch(api_url)
@@ -62,8 +59,6 @@ async function fillCardsList(api_url, isSavingToLocalStorage) {
     if (isSavingToLocalStorage) {
         cardCount.querySelectorAll("span")[1].innerHTML = cards.length
     }
-
-    handleQueryParams()
 }
 
 async function fillCardInfoPage(card) {

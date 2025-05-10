@@ -55,6 +55,12 @@ document.addEventListener("keyup", (e) => {
     }
 })
 
+searchField.querySelector("input").addEventListener("keydown", e => {
+    if (e.key === "Enter") {
+        applyFilter(true)
+    }
+})
+
 sortContainer.querySelectorAll("input").forEach(inp => {
     inp.addEventListener("change", () => {
         greyOutApplyButton(false)
