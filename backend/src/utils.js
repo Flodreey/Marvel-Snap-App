@@ -18,19 +18,7 @@ export function filterAndSort(cardsArray, query) {
         direction 
     } = parseReqestQuery(query)
 
-    // console.log(`search: ${search}`)
-    // console.log(`costArray:`)
-    // console.log(costArray)
-    // console.log(`powerArray:`)
-    // console.log(powerArray)
-    // console.log(`abilityArray:`)
-    // console.log(abilityArray)
-    // console.log(`statusArray:`)
-    // console.log(statusArray)
-    // console.log(`sorting: ${sorting}`)
-    // console.log(`direction: ${direction}`)
-
-    let result = cardsArray
+    return cardsArray
         .filter(card => {
             if (search != "" && !card.name.toLowerCase().includes(search.toLowerCase())) {
                 return false
@@ -69,8 +57,6 @@ export function filterAndSort(cardsArray, query) {
                         : card2.power - card1.power
             }
         })
-
-    return result
 }
 
 export function parseReqestQuery(query) {
@@ -78,7 +64,7 @@ export function parseReqestQuery(query) {
 
     let costArray = []
     if (query.cost) {
-        costArray = query.cost.split(",").map(n => parseInt(n, 10)).filter(n => !isNaN(n))
+        costArray = query.cost.split("-").map(n => parseInt(n, 10)).filter(n => !isNaN(n))
         if (query.cost.includes("gt6")) {
             costArray.push(7, 8, 9, 10)
         }
@@ -86,7 +72,7 @@ export function parseReqestQuery(query) {
 
     let powerArray = []
     if (query.power) {
-        powerArray = query.power.split(",").map(n => parseInt(n, 10)).filter(n => !isNaN(n))
+        powerArray = query.power.split("-").map(n => parseInt(n, 10)).filter(n => !isNaN(n))
         if (query.power.includes("lt0")) {
             powerArray.push(-10, -9, -8, -7, -6, -5, -4, -3, -2, -1)
         }
@@ -97,12 +83,12 @@ export function parseReqestQuery(query) {
 
     let abilityArray = []
     if (query.ability) {
-        abilityArray = query.ability.split(",").map(s => s.trim().toLowerCase())
+        abilityArray = query.ability.split("-").map(s => s.trim().toLowerCase())
     }
     
     let statusArray = []
     if (query.status) {
-        statusArray = query.status.split(",").map(s => s.trim().toLowerCase())
+        statusArray = query.status.split("-").map(s => s.trim().toLowerCase())
     }
 
     let sorting = "name"

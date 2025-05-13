@@ -94,15 +94,15 @@ function splitFilterString(filterString) {
     if (!filterString) {
         return []
     }
-    return filterString.split(",")
+    return filterString.split("-")
 }
 
 function removeNotAllowedValues(valueArray, container) {
     const allowedValues = Array.from(
         container.querySelectorAll(".checkbox-container input")
-    ).map(inp => inp.dataset.value)
+    ).map(inp => inp.dataset.value.toLowerCase())
 
-    return valueArray.filter(value => allowedValues.includes(value.toLowerCase()))
+    return valueArray.filter(value => allowedValues.includes(value))
 }
 
 function setCheckboxesOfContainer(container, valueArray) {
@@ -112,7 +112,7 @@ function setCheckboxesOfContainer(container, valueArray) {
     } else {
         container.querySelector(".input-all").checked = false
         container.querySelectorAll(".checkbox-container input").forEach(inp => {
-            inp.checked = valueArray.includes(inp.dataset.value)
+            inp.checked = valueArray.includes(inp.dataset.value.toLowerCase())
         })
     }
 }

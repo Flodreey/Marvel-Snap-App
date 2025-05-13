@@ -66,25 +66,25 @@ function applyFilter(isSearchField) {
     const costArray = readCheckedFilterInputs("cost")
     if (costArray) {
         if (costArray.includes("6")) costArray.push("gt6")
-        url.searchParams.set("cost", costArray.join(","))
+        url.searchParams.set("cost", costArray.join("-"))
     }
 
     // read checked power buttons
     const powerArray = readCheckedFilterInputs("power")
     if (powerArray) {
-        url.searchParams.set("power", powerArray.join(","))
+        url.searchParams.set("power", powerArray.join("-"))
     }
 
     // read checked ability buttons
     const abilityArray = readCheckedFilterInputs("ability")
     if (abilityArray) {
-        url.searchParams.set("ability", abilityArray.join(","))
+        url.searchParams.set("ability", abilityArray.join("-"))
     }
 
     // read checked status buttons
     const statusArray = readCheckedFilterInputs("status")
     if (statusArray) {
-        url.searchParams.set("status", statusArray.join(","))
+        url.searchParams.set("status", statusArray.join("-"))
     }
 
     if (costArray?.length === 0 || powerArray?.length === 0 || abilityArray?.length === 0 || statusArray?.length === 0) {
@@ -106,10 +106,8 @@ function applyFilter(isSearchField) {
     }
 
     if (url.search) {
-        // console.log(`pushing state ${url.search}`)
         window.history.pushState({}, "", url.search)
     } else {
-        // console.log(`pushing state landing url`)
         navigateToLandingURL()
     }
     
