@@ -65,16 +65,13 @@ function applyFilter(isSearchField) {
     // read checked cost buttons
     const costArray = readCheckedFilterInputs("cost")
     if (costArray) {
-        if (costArray.includes("6")) costArray.push("7", "8", "9", "10")
+        if (costArray.includes("6")) costArray.push("gt6")
         url.searchParams.set("cost", costArray.join(","))
     }
 
     // read checked power buttons
     const powerArray = readCheckedFilterInputs("power")
     if (powerArray) {
-        if (powerArray.includes("-")) powerArray.splice(powerArray.indexOf("-"), 1, "-10", "-9", "-8", "-7", "-6", "-5", "-4", "-3", "-2", "-1")
-        if (powerArray.includes("+")) powerArray.splice(powerArray.indexOf("+"), 1, "11", "12", "13", "14", "15", "16", "17", "18", "19", "20")
-
         url.searchParams.set("power", powerArray.join(","))
     }
 

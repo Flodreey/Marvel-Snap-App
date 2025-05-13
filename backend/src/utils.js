@@ -79,11 +79,20 @@ export function parseReqestQuery(query) {
     let costArray = []
     if (query.cost) {
         costArray = query.cost.split(",").map(n => parseInt(n, 10)).filter(n => !isNaN(n))
+        if (query.cost.includes("gt6")) {
+            costArray.push(7, 8, 9, 10)
+        }
     }
 
     let powerArray = []
     if (query.power) {
         powerArray = query.power.split(",").map(n => parseInt(n, 10)).filter(n => !isNaN(n))
+        if (query.power.includes("lt0")) {
+            powerArray.push(-10, -9, -8, -7, -6, -5, -4, -3, -2, -1)
+        }
+        if (query.power.includes("gt10")) {
+            powerArray.push(11, 12, 13, 14, 15, 16, 17, 18, 19, 20)
+        }
     }
 
     let abilityArray = []
