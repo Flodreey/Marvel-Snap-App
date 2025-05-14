@@ -71,5 +71,5 @@ function turnOffCardInformation(){
     currently_looking_at = ""
     variant_index = 0
     enableScroll()
-    navigateToLandingURL()
+    pushWindowState(previousWindowState)
 }

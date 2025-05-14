@@ -132,6 +132,7 @@ function setCheckboxesOfContainer(container, valueArray) {
 }
 
 function pushWindowState(url) {
+    previousWindowState = window.location.pathname + window.location.search
     window.history.pushState({}, "", url)
 }
 
