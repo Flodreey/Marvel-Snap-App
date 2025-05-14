@@ -62,8 +62,8 @@ async function mapCardsFromAPI(cardsFromAPI, makeImageChecks = true) {
 
         var abilities = [] 
         cardFromAPI.tags.forEach(t => {
-        if (t.tag === "No Ability")
-            abilities.push("no-ability")
+            if (t.tag === "No Ability")
+                abilities.push("noability")
         })
         if (description.includes("Ongoing:")) 
             abilities.push("ongoing")

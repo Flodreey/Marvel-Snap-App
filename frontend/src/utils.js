@@ -31,6 +31,20 @@ function enableSearchFilter(enable) {
     }
 }
 
+function resetFilterContainer() {
+    const allFilterContainers = [costContainer, powerContainer, abilityContainer, statusContainer]
+    allFilterContainers.forEach(container => {
+        container.querySelectorAll("input").forEach(inp => inp.checked = true)
+    })
+
+    sortContainer.querySelectorAll("input").forEach(inp => {
+        if (inp.value === "name") inp.checked = true
+        else inp.checked = false
+    })
+
+    setDirArrow("up")
+}
+
 function checkImage(url) {
     return new Promise((resolve, reject) => {
         const img = new Image()

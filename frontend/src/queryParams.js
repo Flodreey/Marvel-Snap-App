@@ -1,5 +1,6 @@
 async function handleQueryParams() {
     const params = new URLSearchParams(window.location.search)
+    // console.log(`query: ${params.toString()}`)
 
     const filterParamsArray = [
         params.has("cost"),
@@ -10,12 +11,24 @@ async function handleQueryParams() {
         params.has("direction")
     ]
 
+    if (filterParamsArray.includes(true) === filter_is_collapsed) {
+        switchFilter()
+    }
+
+    if (!params.has("search")) {
+        searchField.querySelector("input").value = ""
+        searchField.querySelector("input").blur()
+    }
+
+    if (!filterParamsArray.includes(true)) {
+        resetFilterContainer()
+    }
+
     if (params.has("card")) {
         await fillCardsList(backendURL, true)
         const queryCard = card_data.find(c => c.name.toLowerCase().replace(" ", "-") === params.get("card").toLowerCase())
         if (queryCard) {
-            console.log(`card route: ${queryCard.name}`)
-            window.history.replaceState({}, "", `?card=${queryCard.name.toLowerCase().replace(" ", "-")}`)
+            replaceWindowState(`?card=${queryCard.name.toLowerCase().replace(" ", "-")}`)
 
             cardInformationBackground.style.display = "block"
             mainElement.style.filter = "blur(5px)"
@@ -25,12 +38,14 @@ async function handleQueryParams() {
             fillCardInfoPage(queryCard)
             return 
         }
-    } 
+    } else {
+        cardInformationBackground.style.display = "none"
+        mainElement.style.filter = "none"
+        enableScroll()
+    }
     
     if (filterParamsArray.includes(true) || params.has("search")) {
-        console.log("filter route")
         if (filterParamsArray.includes(true)) {
-            if (filter_is_collapsed) switchFilter()
 
             const {
                 costArray,
@@ -66,13 +81,12 @@ async function handleQueryParams() {
         const { cards, _} = await getCardsFromBackend(backendURL)
         cardCount.querySelectorAll("span")[1].innerHTML = cards.length
 
-        applyFilter(true)
+        applyFilter(true, false)
         return
 
     }
 
-    console.log("Home Page Route")
-    window.history.replaceState({}, "", window.location.pathname)
+    replaceWindowState(window.location.pathname)
     await fillCardsList(backendURL, true)
 }
 
@@ -117,10 +131,18 @@ function setCheckboxesOfContainer(container, valueArray) {
     }
 }
 
+function pushWindowState(url) {
+    window.history.pushState({}, "", url)
+}
+
+function replaceWindowState(url) {
+    window.history.replaceState({}, "", url)
+}
+
 function navigateToCardURL(cardName) {
-    window.history.pushState({}, "", `?card=${cardName.toLowerCase().replace(" ", "-")}`)
+    pushWindowState(`?card=${cardName.toLowerCase().replace(" ", "-")}`)
 }
 
 function navigateToLandingURL() {
-    window.history.pushState({}, "", window.location.pathname)
+    pushWindowState(window.location.pathname)
 }

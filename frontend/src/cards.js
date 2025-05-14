@@ -37,6 +37,7 @@ async function fillCardsList(api_url, isSavingToLocalStorage) {
     }
 
     card_data = []
+    cardList.innerHTML = ""
     cards.forEach((card, index) => {
         // create HTML for current card and insert it into index.html
         const card_html = createCardHTML(index, card.name, card.variants[0])

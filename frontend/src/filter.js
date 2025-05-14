@@ -47,7 +47,8 @@ function greyOutApplyButton(enable){
     }
 }
 
-function applyFilter(isSearchField) {
+function applyFilter(isSearchField, isPushingWindowState=true) {
+    // clicking on a greyed out filter button does nothing
     if (filter_greyed_out && !isSearchField) {
         return 
     }
@@ -105,13 +106,14 @@ function applyFilter(isSearchField) {
         url.searchParams.set("direction", "down") // only setting parameter to "down" bc "up" is default
     }
 
-    if (url.search) {
-        window.history.pushState({}, "", url.search)
-    } else {
-        navigateToLandingURL()
+    if (isPushingWindowState) {
+        if (url.search) {
+            pushWindowState(url.search)
+        } else {
+            navigateToLandingURL()
+        }
     }
     
-    cardList.innerHTML = ""
     fillCardsList(url.toString(), false)
 }
 

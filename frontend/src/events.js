@@ -128,3 +128,7 @@ document.querySelectorAll(".input-check").forEach(inp => {
         greyOutApplyButton(false)
     })
 })
+
+window.addEventListener("popstate", e => {
+    handleQueryParams()
+})
