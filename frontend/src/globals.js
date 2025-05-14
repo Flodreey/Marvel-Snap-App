@@ -32,7 +32,6 @@ let card_data = []
 let currently_looking_at = ""
 let variant_index = 0
 let filter_is_collapsed = true
-let total_card_count = 0
 
 let arrowPointingDown = false
 let filter_greyed_out = true

@@ -25,7 +25,7 @@ async function handleQueryParams() {
     }
 
     if (params.has("card")) {
-        await fillCardsList(backendURL, true)
+        if (card_data.length === 0) await fillCardsList(backendURL, true)
         const queryCard = card_data.find(c => c.name.toLowerCase().replace(" ", "-") === params.get("card").toLowerCase())
         if (queryCard) {
             replaceWindowState(`?card=${queryCard.name.toLowerCase().replace(" ", "-")}`)
@@ -77,9 +77,6 @@ async function handleQueryParams() {
         if (params.has("direction") && ["up", "down"].includes(params.get("direction").toLocaleLowerCase())) {
             setDirArrow(params.get("direction").toLocaleLowerCase())
         }
-        
-        const { cards, _} = await getCardsFromBackend(backendURL)
-        cardCount.querySelectorAll("span")[1].innerHTML = cards.length
 
         applyFilter(true, false)
         return

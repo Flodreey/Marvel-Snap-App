@@ -108,5 +108,8 @@ app.get('/cards', async (req, res) => {
         description: card.description,
         variants: card.variants
     }))
-    res.json(clientCards)
+    res.json({
+        totalCardCount: cachedCards.length, 
+        cards: clientCards
+    })
 })

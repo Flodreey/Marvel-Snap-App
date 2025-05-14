@@ -1,20 +1,33 @@
 async function getCardsFromBackend(api_url) {
     try {
         const response = await fetch(api_url)
-        const backendCards = await response.json() 
-        return { cards: backendCards, hasErrorHappened: false }
+        const responseJson = await response.json() 
+        const totalCardCount = responseJson.totalCardCount
+        const backendCards = responseJson.cards
+        return { 
+            cards: backendCards, 
+            totalCardCount, 
+            hasErrorHappened: false 
+        }
     } catch(error) {
         let localStorageCards = []
         for (let i = 0; i < localStorage.length; i++) {
             localStorageCards.push(JSON.parse(localStorage.getItem(i)))
         }
-        return { cards: localStorageCards, hasErrorHappened: true }
+        return { 
+            cards: localStorageCards, 
+            totalCardCount: localStorageCards.length, 
+            hasErrorHappened: true 
+        }
     }
 }
 
 // fetches card data from server and fills cardList element in index.html with all card's HTML
 async function fillCardsList(api_url, isSavingToLocalStorage) {
-    const { cards, hasErrorHappened } = await getCardsFromBackend(api_url)
+    const { cards, totalCardCount, hasErrorHappened } = await getCardsFromBackend(api_url)
+
+    cardCount.querySelectorAll("span")[0].innerHTML = cards.length
+    cardCount.querySelectorAll("span")[1].innerHTML = totalCardCount
 
     if (hasErrorHappened) {
         serverIssueMessage.style.display = "block"
@@ -55,11 +68,6 @@ async function fillCardsList(api_url, isSavingToLocalStorage) {
             localStorage.setItem(index, jsonString)
         }
     })
-
-    cardCount.querySelectorAll("span")[0].innerHTML = cards.length
-    if (isSavingToLocalStorage) {
-        cardCount.querySelectorAll("span")[1].innerHTML = cards.length
-    }
 }
 
 async function fillCardInfoPage(card) {
