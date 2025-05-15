@@ -55,7 +55,28 @@ function applyFilter(isSearchField, isPushingWindowState=true) {
 
     greyOutApplyButton(true)
 
-    const url = new URL(backendURL)
+    const url = readFilterInputsAndBuildUrl(backendURL)
+
+    if ([url.searchParams.get("cost"), url.searchParams.get("power"), url.searchParams.get("ability"), url.searchParams.get("status")].some(x => x === "")) {
+        filterWarning.querySelector("p").style.display = "block"
+        return
+    } else {
+        filterWarning.querySelector("p").style.display = "none"
+    }
+
+    if (isPushingWindowState) {
+        if (url.search) {
+            pushWindowState(url.search)
+        } else {
+            navigateToLandingURL()
+        }
+    }
+    
+    fillCardsList(url.toString(), false)
+}
+
+function readFilterInputsAndBuildUrl(baseURL) {
+    const url = new URL(baseURL)
 
     // read search field value
     const searchString = searchField.querySelector("input").value.trim()
@@ -88,13 +109,6 @@ function applyFilter(isSearchField, isPushingWindowState=true) {
         url.searchParams.set("status", statusArray.join("-"))
     }
 
-    if (costArray?.length === 0 || powerArray?.length === 0 || abilityArray?.length === 0 || statusArray?.length === 0) {
-        filterWarning.querySelector("p").style.display = "block"
-        return
-    } else {
-        filterWarning.querySelector("p").style.display = "none"
-    }
-
     // read sorting preference
     const sortingString = getSortingChoice()
     if (sortingString && sortingString !== "name") {
@@ -106,15 +120,7 @@ function applyFilter(isSearchField, isPushingWindowState=true) {
         url.searchParams.set("direction", "down") // only setting parameter to "down" bc "up" is default
     }
 
-    if (isPushingWindowState) {
-        if (url.search) {
-            pushWindowState(url.search)
-        } else {
-            navigateToLandingURL()
-        }
-    }
-    
-    fillCardsList(url.toString(), false)
+    return url
 }
 
 function readCheckedFilterInputs(category) {
