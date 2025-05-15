@@ -180,8 +180,8 @@ function setCheckboxesOfContainer(container, valueArray) {
 }
 
 function pushWindowState(url) {
-    previousWindowState = window.location.pathname + window.location.search
-    window.history.pushState({}, "", url)
+    current = window.location.pathname + window.location.search
+    window.history.pushState({previous: current}, "", url)
 }
 
 function replaceWindowState(url) {

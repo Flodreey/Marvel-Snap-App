@@ -36,8 +36,6 @@ let filter_is_collapsed = true
 let arrowPointingDown = false
 let filter_greyed_out = true
 
-let previousWindowState = window.location.pathname
-
 // finds card with given name in card_data array and returns its data
 function getCardData(card_name) {
     return card_data.find(card => card.name === card_name)
