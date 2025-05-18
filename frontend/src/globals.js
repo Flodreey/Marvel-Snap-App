@@ -6,7 +6,8 @@ const mainElement = document.querySelector("main")
 const cardInformationBackground = document.getElementById("card-information-background")
 const bigCardImage = document.getElementById("big-card-image")
 const bigCardName = document.getElementById("big-card-name")
-const bigCardDescription = document.getElementById("big-card-description")
+const nameAndDescription = document.getElementById("name-and-description")
+const bigCardDescription = nameAndDescription.querySelector("#big-card-description")
 const variantButtonContainer = document.getElementById("variant-button-container")
 const prevVariantButton = document.getElementById("prev-variant-button")
 const nextVariantButton = document.getElementById("next-variant-button")
@@ -35,6 +36,22 @@ let filter_is_collapsed = true
 
 let arrowPointingDown = false
 let filter_greyed_out = true
+
+const SLIDE_ANIMATION_DURATION = 300   
+document.documentElement.style.setProperty('--slide-animation-duration', `${SLIDE_ANIMATION_DURATION}ms`);
+let slideTimestamp = Date.now()
+
+const animationClasses = [
+    "fade-animation",
+    "slide-left-to-center", 
+    "slide-right-to-center", 
+    "slide-center-to-left", 
+    "slide-center-to-right",
+    "slide-top-to-center",
+    "slide-bottom-to-center",
+    "slide-center-to-top",
+    "slide-center-to-bottom"
+]
 
 // finds card with given name in card_data array and returns its data
 function getCardData(card_name) {

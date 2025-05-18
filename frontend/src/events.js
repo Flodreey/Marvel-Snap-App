@@ -17,7 +17,7 @@ document.addEventListener("keydown", (e) => {
             nextVariantButton.classList.remove("arrow-button-not-hover")
             nextVariantButton.classList.add("arrow-button-hover")
         } else if (e.key === "ArrowRight") {
-            clickNextCardButton("forward")
+            clickNextCardButton("right")
             nextCardButton.classList.remove("arrow-button-not-hover")
             nextCardButton.classList.add("arrow-button-hover")
         } else if (e.key === "ArrowDown") {
@@ -25,7 +25,7 @@ document.addEventListener("keydown", (e) => {
             prevVariantButton.classList.remove("arrow-button-not-hover")
             prevVariantButton.classList.add("arrow-button-hover")
         } else if (e.key === "ArrowLeft") {
-            clickNextCardButton("backward")
+            clickNextCardButton("left")
             prevCardButton.classList.remove("arrow-button-not-hover")
             prevCardButton.classList.add("arrow-button-hover")
         }

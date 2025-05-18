@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="src/css/style-cards.css">
     <link rel="stylesheet" href="src/css/style-card-info.css">
     <link rel="stylesheet" href="src/css/style-search.css">
+    <link rel="stylesheet" href="src/css/style-card-info-animations.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -198,7 +199,7 @@
     </main>
 
     <div id="card-information-background" onclick="turnOffCardInformation()">
-        <div id="prev-card-button" class="prev-next-card-buttons arrow-button-not-hover" onclick="clickNextCardButton('backward')">
+        <div id="prev-card-button" class="prev-next-card-buttons arrow-button-not-hover" onclick="clickNextCardButton('left')">
             <div>&#8249;</div>
         </div>
         <div id="card-information-container">
@@ -207,7 +208,8 @@
                     <div onclick="clickNextVariantButton('up')" id="next-variant-button" class="arrow-button-not-hover">&#8249;</div>
                     <div onclick="clickNextVariantButton('down')" id="prev-variant-button" class="arrow-button-not-hover">&#8249;</div>
                 </div>
-                <img src="" alt="">
+                <img src="" alt="" class="current">
+                <img src="" alt="" class="next">
             </div>
 
             <div id="name-and-description">
@@ -215,17 +217,18 @@
                 <div id="big-card-description"></div>
             </div>
         </div>
-        <div id="next-card-button" class="prev-next-card-buttons arrow-button-not-hover" onclick="clickNextCardButton('forward')">
+        <div id="next-card-button" class="prev-next-card-buttons arrow-button-not-hover" onclick="clickNextCardButton('right')">
             <div>&#8250;</div>
         </div>
     </div>
 
     <script src="src/globals.js"></script>
     <script src="src/utils.js"></script>
+    <script src="src/animations.js"></script>
     <script src="src/cardUI.js"></script>
-    <script src="src/queryParams.js"></script>
     <script src="src/cards.js"></script>
     <script src="src/filter.js"></script>
+    <script src="src/queryParams.js"></script>
     <script src="src/events.js"></script>
     <script src="src/main.js"></script>
 </body>

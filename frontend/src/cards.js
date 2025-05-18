@@ -70,7 +70,18 @@ async function fillCardsList(api_url, isSavingToLocalStorage) {
     })
 }
 
-async function fillCardInfoPage(card) {
+function setNameAndDescription(name, description) {
+    bigCardName.innerHTML = name
+    const strongDescription = description
+                                .replace("On Reveal:", "<strong>On Reveal:</strong>")
+                                .replace("Ongoing:", "<strong>Ongoing:</strong>")
+                                .replace("Activate:", "<strong>Activate:</strong>")
+                                .replace("Game Start:", "<strong>Game Start:</strong>")
+                                .replace("End of Turn:", "<strong>End of Turn:</strong>")
+    bigCardDescription.innerHTML = strongDescription
+}
+
+function fillCardInfoPage(card) {
     // set image of card information page
     // if card has an image (not question mark image) then show that image on card information page otherwise show no image
     if (card.variants[0] != "") {
@@ -80,58 +91,60 @@ async function fillCardInfoPage(card) {
         bigCardImage.style.display = "none"
     }
     
-    // set name of card information page
-    bigCardName.innerHTML = card.name
-
-    // set description of card information page and make "On Reveal:", "Ongoing:", "Activate:", "Game Start:" and "End of Turn:" bold
-    const card_description = card.description
-                                .replace("On Reveal:", "<strong>On Reveal:</strong>")
-                                .replace("Ongoing:", "<strong>Ongoing:</strong>")
-                                .replace("Activate:", "<strong>Activate:</strong>")
-                                .replace("Game Start:", "<strong>Game Start:</strong>")
-                                .replace("End of Turn:", "<strong>End of Turn:</strong>")
-    bigCardDescription.innerHTML = card_description
+    setNameAndDescription(card.name, card.description)
 
     if (card.variants.length == 1) {
         variantButtonContainer.style.display = "none"
     } else {
-        card.variants = await preloadAndFilterImages(card.variants)
+        // card.variants = await preloadAndFilterImages(card.variants)
         variantButtonContainer.style.display = card.variants.length == 1 ? "none" : "block"
     }
     currently_looking_at = card.name
     variant_index = 0
 }
 
-function clickNextCardButton(direction) {
-    const current_card = getCardData(currently_looking_at)
-    let next_card = current_card
-
-    if (direction === "forward") {
-        // show next card if possible
-        if (current_card.index != card_data.length - 1)
-            next_card = card_data[current_card.index + 1]
-    } else if (direction === "backward") {
-        // show previous card if possible
-        if (current_card.index != 0)
-            next_card = card_data[current_card.index - 1]
+async function clickNextCardButton(direction) {
+    if (!["right", "left"].includes(direction)) {
+        return
     }
 
-    navigateToCardURL(next_card.name)
-    fillCardInfoPage(next_card)
+    const current_card = getCardData(currently_looking_at)
+    let next_card = undefined
+
+    if (direction === "right" && current_card.index != card_data.length - 1) {
+        next_card = card_data[current_card.index + 1]
+    } else if (direction === "left" && current_card.index != 0) {
+        next_card = card_data[current_card.index - 1]
+    }
+    if (next_card !== undefined) {
+        const isOk = await slideCards(direction, current_card, next_card, () => {
+            setNameAndDescription(next_card.name, next_card.description)
+        })
+        if (isOk) {
+            navigateToCardURL(next_card.name)
+            fillCardInfoPage(next_card)
+        }
+    }
 }
 
 function clickNextVariantButton(direction) {
+    if (!["up", "down"].includes(direction)) {
+        return
+    }
+
     const current_card = getCardData(currently_looking_at)
+    let nextVariantIndex = 0
     if (direction === "up") {
-        variant_index = (variant_index + 1) % current_card.variants.length
+        nextVariantIndex = (variant_index + 1) % current_card.variants.length
     } else if (direction === "down") {
-        variant_index--
-        if (variant_index == -1) 
-            variant_index = current_card.variants.length - 1
+        nextVariantIndex = variant_index - 1
+        if (nextVariantIndex == -1) 
+            nextVariantIndex = current_card.variants.length - 1
     }
     
-    let newURL = getCardData(currently_looking_at).variants[variant_index]
-    checkImage(newURL).then(isValid => {
-        bigCardImage.querySelector("img").src = isValid ? newURL : "images/Question-Mark.png"
+    let newURL = current_card.variants[nextVariantIndex]
+    checkImage(newURL).then(async isValid => {
+        const isOk = await slideVariants(direction, current_card, isValid ? newURL : "images/Question-Mark.png")
+        if (isOk) variant_index = nextVariantIndex
     })
 }
