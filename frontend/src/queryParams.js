@@ -180,12 +180,13 @@ function setCheckboxesOfContainer(container, valueArray) {
 }
 
 function pushWindowState(url) {
-    current = window.location.pathname + window.location.search
-    window.history.pushState({previous: current}, "", url)
+    const previous = window.location.pathname + window.location.search
+    window.history.pushState({previous}, "", url)
 }
 
 function replaceWindowState(url) {
-    window.history.replaceState({}, "", url)
+    const previous = window.history.state?.previous || window.location.pathname
+    window.history.replaceState({previous}, "", url)
 }
 
 function navigateToCardURL(cardName) {

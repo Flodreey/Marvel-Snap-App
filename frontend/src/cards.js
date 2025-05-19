@@ -29,6 +29,8 @@ async function fillCardsList(api_url, isSavingToLocalStorage) {
     cardCount.querySelectorAll("span")[0].innerHTML = cards.length
     cardCount.querySelectorAll("span")[1].innerHTML = totalCardCount
 
+    cardList.innerHTML = ""
+
     if (hasErrorHappened) {
         serverIssueMessage.style.display = "block"
 
@@ -50,7 +52,6 @@ async function fillCardsList(api_url, isSavingToLocalStorage) {
     }
 
     card_data = []
-    cardList.innerHTML = ""
     cards.forEach((card, index) => {
         // create HTML for current card and insert it into index.html
         const card_html = createCardHTML(index, card.name, card.variants[0])
