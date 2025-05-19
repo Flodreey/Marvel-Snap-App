@@ -52,8 +52,3 @@ const animationClasses = [
     "slide-center-to-top",
     "slide-center-to-bottom"
 ]
-
-// finds card with given name in card_data array and returns its data
-function getCardData(card_name) {
-    return card_data.find(card => card.name === card_name)
-}

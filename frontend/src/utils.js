@@ -73,3 +73,28 @@ function turnOffCardInformation(){
     enableScroll()
     pushWindowState(window.location.state.previous || window.location.pathname)
 }
+
+function getNextCardIndex(direction) {
+    if (!["right", "left"].includes(direction)) return -1
+
+    if (direction === "right" && currently_looking_at != card_data.length - 1) {
+        return currently_looking_at + 1
+    } else if (direction === "left" && currently_looking_at != 0) {
+        return currently_looking_at - 1
+    }
+    return -1
+}
+
+function getNextVariantIndex(direction, card) {
+    if (!["up", "down"].includes(direction)) return -1
+
+    if (direction === "up") {
+        return (variant_index + 1) % card.variants.length
+    } else {
+        return (variant_index === 0) ? card.variants.length - 1 : variant_index - 1
+    }
+}
+
+function hasValidCardImage(card) {
+    return card.variants[0] !== ""
+}

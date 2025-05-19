@@ -107,49 +107,115 @@ function fillCardInfoPage(cardIndex) {
 }
 
 async function clickNextCardButton(direction) {
-    if (!["right", "left"].includes(direction)) {
-        return
-    }
+    if (!["right", "left"].includes(direction) || !isSlideAnimationAllowed()) return
+    slideTimestamp = Date.now()
+
+    let nextCardIndex = getNextCardIndex(direction)
+    if (nextCardIndex === -1) return 
 
     const current_card = card_data[currently_looking_at]
-    let nextCardIndex = -1
+    const next_card = card_data[nextCardIndex]
 
-    if (direction === "right" && currently_looking_at != card_data.length - 1) {
-        nextCardIndex = currently_looking_at + 1
-    } else if (direction === "left" && currently_looking_at != 0) {
-        nextCardIndex = currently_looking_at - 1
+    if (hasValidCardImage(current_card) || hasValidCardImage(next_card)) {
+        bigCardImage.style.display = "block"
+        variantButtonContainer.style.display = "none"
+
+        const currentImage = bigCardImage.querySelector(".current")
+        const nextImage = bigCardImage.querySelector(".next")
+
+        nextImage.src = next_card.variants[0]
+
+        const { currentImageClass, nextImageClass } = getAnimationClassesFromDirection(direction)
+        addAnimationClass(currentImage, currentImageClass)
+        addAnimationClass(nextImage, nextImageClass)
+        addAnimationClass(nameAndDescription, "fade-animation")
+
+        setTimeout(() => setNameAndDescription(next_card.name, next_card.description), SLIDE_ANIMATION_DURATION / 2)
+
+        await waitForAnimationEnd(nextImage)
+
+        removeAnimationclasses(currentImage)
+        removeAnimationclasses(nextImage)
+        removeAnimationclasses(nameAndDescription)
     }
 
-    if (nextCardIndex !== -1) {
-        const next_card = card_data[nextCardIndex]
-        const isOk = await slideCards(direction, current_card, next_card, () => {
-            setNameAndDescription(next_card.name, next_card.description)
-        })
-        if (isOk) {
-            navigateToCardURL(next_card.name)
-            fillCardInfoPage(nextCardIndex)
-        }
+    navigateToCardURL(next_card.name)
+    fillCardInfoPage(nextCardIndex)
+}
+
+async function clickNextVariantButton(direction) {
+    const current_card = card_data[currently_looking_at]
+
+    if (!["up", "down"].includes(direction) || !isSlideAnimationAllowed() || current_card.variants.length <= 1)
+        return 
+    slideTimestamp = Date.now()
+
+    variant_index = getNextVariantIndex(direction, current_card)
+    const nextImageUrl = current_card.variants[variant_index]
+
+    const currentImage = bigCardImage.querySelector(".current")
+    const nextImage = bigCardImage.querySelector(".next")
+    
+    nextImage.src = nextImageUrl
+
+    const { currentImageClass, nextImageClass } = getAnimationClassesFromDirection(direction)
+    addAnimationClass(currentImage, currentImageClass)
+    addAnimationClass(nextImage, nextImageClass)
+
+    await waitForAnimationEnd(nextImage)
+
+    currentImage.src = nextImageUrl
+    removeAnimationclasses(currentImage)
+    removeAnimationclasses(nextImage)
+
+    // let newURL = current_card.variants[nextVariantIndex]
+    // checkImage(newURL).then(async isValid => {
+    //     const isOk = await slideVariants(direction, current_card, isValid ? newURL : "images/Question-Mark.png")
+    //     if (isOk) variant_index = nextVariantIndex
+    // })
+}
+
+function getAnimationClassesFromDirection(direction) {
+    if (!["right", "left", "up", "down"].includes(direction)) return
+
+    let currentImageClass = ""
+    let nextImageClass = ""
+
+    if (direction === "right") {
+        currentImageClass = "slide-center-to-left"
+        nextImageClass = "slide-right-to-center"
+    } else if (direction === "left") {
+        currentImageClass = "slide-center-to-right"
+        nextImageClass = "slide-left-to-center"
+    } else if (direction === "up") {
+        currentImageClass = "slide-center-to-bottom"
+        nextImageClass = "slide-top-to-center"
+    } else {
+        currentImageClass = "slide-center-to-top"
+        nextImageClass = "slide-bottom-to-center"
+    }
+
+    return { currentImageClass, nextImageClass }
+}
+
+function addAnimationClass(element, animationClass) {
+    if (animationClasses.includes(animationClass)) {
+        removeAnimationclasses(element)
+        void element.offsetWidth
+        element.classList.add(animationClass)
     }
 }
 
-function clickNextVariantButton(direction) {
-    if (!["up", "down"].includes(direction)) {
-        return
-    }
+function isSlideAnimationAllowed() {
+    return Date.now() - slideTimestamp >= SLIDE_ANIMATION_DURATION + SLIDE_ANIMATION_DURATION / 30
+}
 
-    const current_card = card_data[currently_looking_at]
-    let nextVariantIndex = 0
-    if (direction === "up") {
-        nextVariantIndex = (variant_index + 1) % current_card.variants.length
-    } else if (direction === "down") {
-        nextVariantIndex = variant_index - 1
-        if (nextVariantIndex == -1) 
-            nextVariantIndex = current_card.variants.length - 1
-    }
-    
-    let newURL = current_card.variants[nextVariantIndex]
-    checkImage(newURL).then(async isValid => {
-        const isOk = await slideVariants(direction, current_card, isValid ? newURL : "images/Question-Mark.png")
-        if (isOk) variant_index = nextVariantIndex
-    })
+function waitForAnimationEnd(element) {
+    return new Promise(resolve => 
+        element.addEventListener("animationend", () => resolve(), {once: true})
+    )
+}
+
+function removeAnimationclasses(element) {
+    element.classList.remove(...animationClasses)
 }
