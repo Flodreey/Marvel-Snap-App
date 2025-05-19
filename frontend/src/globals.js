@@ -30,7 +30,7 @@ const cardCount = document.getElementById("card-count")
 // global variables
 const backendURL = "http://localhost:8000/cards"
 let card_data = []
-let currently_looking_at = ""
+let currently_looking_at = -1
 let variant_index = 0
 let filter_is_collapsed = true
 

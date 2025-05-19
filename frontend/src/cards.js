@@ -81,7 +81,10 @@ function setNameAndDescription(name, description) {
     bigCardDescription.innerHTML = strongDescription
 }
 
-function fillCardInfoPage(card) {
+function fillCardInfoPage(cardIndex) {
+    const card = card_data[cardIndex]
+    if (!card) return
+    
     // set image of card information page
     // if card has an image (not question mark image) then show that image on card information page otherwise show no image
     if (card.variants[0] != "") {
@@ -99,7 +102,7 @@ function fillCardInfoPage(card) {
         // card.variants = await preloadAndFilterImages(card.variants)
         variantButtonContainer.style.display = card.variants.length == 1 ? "none" : "block"
     }
-    currently_looking_at = card.name
+    currently_looking_at = cardIndex
     variant_index = 0
 }
 
@@ -108,21 +111,23 @@ async function clickNextCardButton(direction) {
         return
     }
 
-    const current_card = getCardData(currently_looking_at)
-    let next_card = undefined
+    const current_card = card_data[currently_looking_at]
+    let nextCardIndex = -1
 
-    if (direction === "right" && current_card.index != card_data.length - 1) {
-        next_card = card_data[current_card.index + 1]
-    } else if (direction === "left" && current_card.index != 0) {
-        next_card = card_data[current_card.index - 1]
+    if (direction === "right" && currently_looking_at != card_data.length - 1) {
+        nextCardIndex = currently_looking_at + 1
+    } else if (direction === "left" && currently_looking_at != 0) {
+        nextCardIndex = currently_looking_at - 1
     }
-    if (next_card !== undefined) {
+
+    if (nextCardIndex !== -1) {
+        const next_card = card_data[nextCardIndex]
         const isOk = await slideCards(direction, current_card, next_card, () => {
             setNameAndDescription(next_card.name, next_card.description)
         })
         if (isOk) {
             navigateToCardURL(next_card.name)
-            fillCardInfoPage(next_card)
+            fillCardInfoPage(nextCardIndex)
         }
     }
 }
@@ -132,7 +137,7 @@ function clickNextVariantButton(direction) {
         return
     }
 
-    const current_card = getCardData(currently_looking_at)
+    const current_card = card_data[currently_looking_at]
     let nextVariantIndex = 0
     if (direction === "up") {
         nextVariantIndex = (variant_index + 1) % current_card.variants.length

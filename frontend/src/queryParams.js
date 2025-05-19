@@ -17,7 +17,7 @@ async function handleQueryParams() {
         cardInformationBackground.style.display = "block"
         mainElement.style.filter = "blur(5px)"
         disableScroll()
-        fillCardInfoPage(card)
+        fillCardInfoPage(card.index)
         return 
     } else {
         cardInformationBackground.style.display = "none"

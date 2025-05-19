@@ -35,10 +35,10 @@ function clickCard(cardElement){
     disableScroll()
     
     const card_name = cardElement.querySelector(".card-name").innerHTML
-    const clicked_card = getCardData(card_name)
+    const cardIndex = parseInt(cardElement.querySelector("img").dataset.cardindex)
 
     navigateToCardURL(card_name)
-    fillCardInfoPage(clicked_card)
+    fillCardInfoPage(cardIndex)
 }
 
 function handleImgLoadError(image) {

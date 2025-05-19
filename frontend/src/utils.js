@@ -68,7 +68,7 @@ async function preloadAndFilterImages(urlArray) {
 function turnOffCardInformation(){
     cardInformationBackground.style.display = "none"
     mainElement.style.filter = "none"
-    currently_looking_at = ""
+    currently_looking_at = -1
     variant_index = 0
     enableScroll()
     pushWindowState(window.location.state.previous || window.location.pathname)
