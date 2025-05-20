@@ -132,10 +132,3 @@ document.querySelectorAll(".input-check").forEach(inp => {
 window.addEventListener("popstate", e => {
     handleQueryParams()
 })
-
-bigCardImage.querySelectorAll("img").forEach(img => {
-    img.addEventListener("error", () => {
-        img.src = "images/Question-Mark.png"
-        card_data[currently_looking_at].variants[variant_index] = ""
-    })
-}) 

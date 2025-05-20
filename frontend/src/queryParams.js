@@ -179,18 +179,26 @@ function setCheckboxesOfContainer(container, valueArray) {
     }
 }
 
-function pushWindowState(url) {
-    const previous = window.location.pathname + window.location.search
-    window.history.pushState({previous}, "", url)
+function pushWindowState(url, isStoringInState = true) {
+    if (isStoringInState) {
+        const previous = window.location.pathname + window.location.search
+        window.history.pushState({previous}, "", url)
+    } else {
+        window.history.pushState({}, "", url)
+    }
 }
 
-function replaceWindowState(url) {
-    const previous = window.history.state?.previous || window.location.pathname
-    window.history.replaceState({previous}, "", url)
+function replaceWindowState(url, isStoringInState = true) {
+    if (isStoringInState) {
+        const previous = window.history.state?.previous || window.location.pathname
+        window.history.replaceState({previous}, "", url)
+    } else {
+        window.history.replaceState({}, "", url)
+    }
 }
 
 function navigateToCardURL(cardName) {
-    pushWindowState(`?card=${cardName.toLowerCase().replace(" ", "-")}`)
+    pushWindowState(`?card=${cardName.toLowerCase().replace(" ", "-")}`, false)
 }
 
 function navigateToLandingURL() {

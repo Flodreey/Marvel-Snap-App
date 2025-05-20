@@ -88,7 +88,7 @@ function fillCardInfoPage(cardIndex) {
     
     // set image of card information page
     // if card has an image (not question mark image) then show that image on card information page otherwise show no image
-    if (card.variants[0] != "") {
+    if (card.variants[0] !== "") {
         bigCardImage.style.display = "block"
         bigCardImage.querySelector("img").src = card.variants[0]
     } else {
@@ -105,6 +105,8 @@ function fillCardInfoPage(cardIndex) {
     }
     currently_looking_at = cardIndex
     variant_index = 0
+
+    preloadAndFilterImages(card.variants).then(newVariants => card.variants = newVariants)
 }
 
 async function clickNextCardButton(direction) {
@@ -168,12 +170,6 @@ async function clickNextVariantButton(direction) {
     currentImage.src = nextImageUrl
     removeAnimationclasses(currentImage)
     removeAnimationclasses(nextImage)
-
-    // let newURL = current_card.variants[nextVariantIndex]
-    // checkImage(newURL).then(async isValid => {
-    //     const isOk = await slideVariants(direction, current_card, isValid ? newURL : "images/Question-Mark.png")
-    //     if (isOk) variant_index = nextVariantIndex
-    // })
 }
 
 function getAnimationClassesFromDirection(direction) {
