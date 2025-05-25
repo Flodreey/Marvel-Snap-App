@@ -18,7 +18,9 @@
 .slide-bottom-to-center, 
 .slide-center-to-top,
 .slide-center-to-bottom,
-.fade-animation {
+.fade-animation,
+.shrink-invalid-image,
+.expand-valid-image {
     animation-duration: var(--slide-animation-duration);
     animation-timing-function: ease;
     animation-iteration-count: 1;
@@ -158,5 +160,23 @@
     100% {
         transform: translateY(100vh);
         opacity: 0;
+    }
+}
+
+.shrink-invalid-image {
+    animation-name: shrinkInvalidImage;
+}
+
+.expand-valid-image {
+    animation-name: shrinkInvalidImage;
+    animation-direction: reverse;
+}
+
+@keyframes shrinkInvalidImage {
+    0% {
+        width: 100%;
+    }
+    100%{
+        width: 0%;
     }
 }

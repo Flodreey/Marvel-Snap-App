@@ -43,6 +43,8 @@ let slideTimestamp = Date.now()
 
 const animationClasses = [
     "fade-animation",
+    "shrink-invalid-image",
+    "expand-valid-image",
     "slide-left-to-center", 
     "slide-right-to-center", 
     "slide-center-to-left", 

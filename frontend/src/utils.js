@@ -96,5 +96,5 @@ function getNextVariantIndex(direction, card) {
 }
 
 function hasValidCardImage(card) {
-    return card.variants[0] !== ""
+    return card.variants[0] !== undefined && card.variants[0] !== ""
 }

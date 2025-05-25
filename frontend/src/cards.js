@@ -88,7 +88,7 @@ function fillCardInfoPage(cardIndex) {
     
     // set image of card information page
     // if card has an image (not question mark image) then show that image on card information page otherwise show no image
-    if (card.variants[0] !== "") {
+    if (hasValidCardImage(card)) {
         bigCardImage.style.display = "block"
         bigCardImage.querySelector("img").src = card.variants[0]
     } else {
@@ -97,7 +97,7 @@ function fillCardInfoPage(cardIndex) {
     
     setNameAndDescription(card.name, card.description)
 
-    if (card.variants.length == 1) {
+    if (card.variants.length <= 1) {
         variantButtonContainer.style.display = "none"
     } else {
         // card.variants = await preloadAndFilterImages(card.variants)
@@ -116,31 +116,45 @@ async function clickNextCardButton(direction) {
     let nextCardIndex = getNextCardIndex(direction)
     if (nextCardIndex === -1) return 
 
+    variantButtonContainer.style.display = "none"
+
     const current_card = card_data[currently_looking_at]
     const next_card = card_data[nextCardIndex]
 
-    if (hasValidCardImage(current_card) || hasValidCardImage(next_card)) {
-        bigCardImage.style.display = "block"
-        variantButtonContainer.style.display = "none"
+    const { currentImageClass, nextImageClass } = getAnimationClassesFromDirection(direction)
 
-        const currentImage = bigCardImage.querySelector(".current")
-        const nextImage = bigCardImage.querySelector(".next")
+    const currentImage = bigCardImage.querySelector(".current")
+    const nextImage = bigCardImage.querySelector(".next")
 
+    if (!hasValidCardImage(current_card) && hasValidCardImage(next_card)) {
         nextImage.src = next_card.variants[0]
+        bigCardImage.style.display = "block"
+        currentImage.style.display = "none"
+        addAnimationClass(nextImage, nextImageClass)
+        addAnimationClass(bigCardImage, "expand-valid-image")
 
-        const { currentImageClass, nextImageClass } = getAnimationClassesFromDirection(direction)
+    } else if (hasValidCardImage(current_card) && !hasValidCardImage(next_card)) {
+        addAnimationClass(currentImage, currentImageClass)
+        addAnimationClass(bigCardImage, "shrink-invalid-image")
+
+    } else if (hasValidCardImage(current_card) && hasValidCardImage(next_card)) {
+        nextImage.src = next_card.variants[0]
         addAnimationClass(currentImage, currentImageClass)
         addAnimationClass(nextImage, nextImageClass)
-        addAnimationClass(nameAndDescription, "fade-animation")
-
-        setTimeout(() => setNameAndDescription(next_card.name, next_card.description), SLIDE_ANIMATION_DURATION / 2)
-
-        await waitForAnimationEnd(nextImage)
-
-        removeAnimationclasses(currentImage)
-        removeAnimationclasses(nextImage)
-        removeAnimationclasses(nameAndDescription)
     }
+    addAnimationClass(nameAndDescription, "fade-animation")
+
+    await waitForMs(SLIDE_ANIMATION_DURATION / 2)
+    setNameAndDescription(next_card.name, next_card.description)
+
+    await waitForMs(SLIDE_ANIMATION_DURATION / 2)
+
+    if (hasValidCardImage(next_card)) currentImage.style.display = "block"
+
+    removeAnimationclasses(bigCardImage)
+    removeAnimationclasses(currentImage)
+    removeAnimationclasses(nextImage)
+    removeAnimationclasses(nameAndDescription)
 
     navigateToCardURL(next_card.name)
     fillCardInfoPage(nextCardIndex)
@@ -211,6 +225,10 @@ function waitForAnimationEnd(element) {
     return new Promise(resolve => 
         element.addEventListener("animationend", () => resolve(), {once: true})
     )
+}
+
+function waitForMs(ms) {
+    return new Promise(resolve => setTimeout(() => resolve(), ms))
 }
 
 function removeAnimationclasses(element) {
