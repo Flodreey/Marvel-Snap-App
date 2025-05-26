@@ -10,8 +10,8 @@
 
 #card-information-container{
    height: 90%;
-   /* width: 80%; */
-   max-width: 1200px;
+   width: 80%;
+   /* max-width: 1200px; */
    position: relative;
    top: 50%;
    left: 50%;
@@ -28,7 +28,7 @@
 #big-card-image {
     position: relative;
     height: 100%;
-    width: 100%;
+    width: fit-content;
     display: flex;
     justify-content: center;
 
@@ -134,7 +134,7 @@
 @media screen and (max-width: 1300px){   
     #card-information-container {
         flex-direction: column;
-    }    
+    }
 
     #name-and-description h2{
         margin: 0;

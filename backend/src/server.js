@@ -1,8 +1,8 @@
-import express from "express"
-import axios from "axios"
-import cors from "cors"
+const express = require("express")
+const axios = require("axios")
+const cors = require("cors")
 
-import { checkImageURL, filterAndSort } from "./utils.js"
+const { checkImageURL, filterAndSort } = require("./utils.js")
 
 const app = express()
 app.use(cors())

@@ -1,4 +1,4 @@
-export async function checkImageURL(imageURL) {
+async function checkImageURL(imageURL) {
     try {
         const imageResponse = await fetch(imageURL, { method: "HEAD" })
         return imageResponse.ok
@@ -7,7 +7,7 @@ export async function checkImageURL(imageURL) {
     }
 }
 
-export function filterAndSort(cardsArray, query) {
+function filterAndSort(cardsArray, query) {
     const { 
         search, 
         costArray, 
@@ -59,7 +59,7 @@ export function filterAndSort(cardsArray, query) {
         })
 }
 
-export function parseReqestQuery(query) {
+function parseReqestQuery(query) {
     let search = query.search ?? ""
 
     let costArray = []
@@ -102,4 +102,10 @@ export function parseReqestQuery(query) {
     }
 
     return { search, costArray, powerArray, abilityArray, statusArray, sorting, direction }
+}
+
+module.exports = {
+    parseReqestQuery,
+    checkImageURL,
+    filterAndSort
 }
