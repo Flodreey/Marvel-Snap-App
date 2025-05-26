@@ -26,6 +26,9 @@ const abilityContainer = document.getElementById("ability-container")
 const statusContainer = document.getElementById("status-container")
 const filterWarning = document.getElementById("filter-warning")
 const cardCount = document.getElementById("card-count")
+const currentImage = bigCardImage.querySelector(".current")
+const nextImage = bigCardImage.querySelector(".next")
+const radialGradientForeground = bigCardImage.querySelector(".radial-light")
 
 // global variables
 const backendURL = "http://localhost:8000/cards"

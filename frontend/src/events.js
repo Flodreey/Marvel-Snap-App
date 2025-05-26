@@ -132,3 +132,46 @@ document.querySelectorAll(".input-check").forEach(inp => {
 window.addEventListener("popstate", e => {
     handleQueryParams()
 })
+
+let scaledRect = undefined
+bigCardImage.addEventListener("mouseenter", e => {
+    const rect = bigCardImage.getBoundingClientRect()
+    const scale = 0.8
+    scaledRect = {
+        left: rect.left + (rect.width * (1 - scale)) / 2,
+        top: rect.top + (rect.height * (1 - scale)) / 2,
+        width: rect.width * scale,
+        height: rect.height * scale,
+        right: rect.right - (rect.width * (1 - scale)) / 2,
+        bottom: rect.bottom - (rect.height * (1 - scale)) / 2
+    }
+})
+
+bigCardImage.addEventListener("mousemove", e => {
+    if (
+        scaledRect && e.clientX >= scaledRect.left && e.clientX <= scaledRect.right && 
+        e.clientY >= scaledRect.top && e.clientY <= scaledRect.bottom
+    ) {
+        const x = e.clientX - scaledRect.left
+        const y = e.clientY - scaledRect.top
+        const xPercentage = x / scaledRect.width
+        const yPercentage = y / scaledRect.height
+        const xRotation = Math.floor((xPercentage - 0.5) * 30)
+        const yRotation = Math.floor((yPercentage - 0.5) * (-30))
+        currentImage.style.transform = `rotateX(${yRotation}deg) rotateY(${xRotation}deg)`
+        radialGradientForeground.style.transform = `translate(-50%, -50%) rotateX(${yRotation}deg) rotateY(${xRotation}deg)`
+        radialGradientForeground.style.background = `radial-gradient(circle at ${xPercentage * 100}% ${yPercentage * 100}%, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 90%)`
+    } else {
+        resetRotationAndBackground()
+    }
+})
+
+bigCardImage.addEventListener("mouseleave", e => {
+    resetRotationAndBackground()
+})
+
+function resetRotationAndBackground() {
+    currentImage.style.transform = `rotateX(${0}deg) rotateY(${0}deg)`
+    radialGradientForeground.style.transform = `translate(-50%, -50%)`
+    radialGradientForeground.style.background = `none`
+}
