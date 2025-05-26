@@ -37,7 +37,8 @@ function clickCard(cardElement){
     const card_name = cardElement.querySelector(".card-name").innerHTML
     const cardIndex = parseInt(cardElement.querySelector("img").dataset.cardindex)
 
-    navigateToCardURL(card_name)
+    const shouldStoreCurrentUrl = true
+    navigateToCardURL(card_name, shouldStoreCurrentUrl)
     fillCardInfoPage(cardIndex)
 }
 

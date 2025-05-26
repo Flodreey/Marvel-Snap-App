@@ -179,28 +179,30 @@ function setCheckboxesOfContainer(container, valueArray) {
     }
 }
 
-function pushWindowState(url, isStoringInState = true) {
-    if (isStoringInState) {
-        const previous = window.location.pathname + window.location.search
-        window.history.pushState({previous}, "", url)
-    } else {
-        window.history.pushState({}, "", url)
-    }
+function pushWindowState(url, shouldStoreCurrentUrl = true) {
+    let previous = shouldStoreCurrentUrl ? getCurrentUrl() : getPreviousUrl()
+    window.history.pushState({previous}, "", url)
+    // console.log(`pushing url ${url} and setting previous to ${previous}`)
 }
 
-function replaceWindowState(url, isStoringInState = true) {
-    if (isStoringInState) {
-        const previous = window.history.state?.previous || window.location.pathname
-        window.history.replaceState({previous}, "", url)
-    } else {
-        window.history.replaceState({}, "", url)
-    }
+function replaceWindowState(url) {
+    let previous = getPreviousUrl()
+    window.history.replaceState({previous}, "", url)
+    // console.log(`replacing url ${url} and setting previous to ${previous}`)
 }
 
-function navigateToCardURL(cardName) {
-    pushWindowState(`?card=${cardName.toLowerCase().replace(" ", "-")}`, false)
+function navigateToCardURL(cardName, shouldStoreCurrentUrl = true) {
+    pushWindowState(`?card=${cardName.toLowerCase().replace(" ", "-")}`, shouldStoreCurrentUrl)
 }
 
 function navigateToLandingURL() {
     pushWindowState(window.location.pathname)
+}
+
+function getCurrentUrl() {
+    return window.location.pathname + window.location.search
+}
+
+function getPreviousUrl() {
+    return window.history.state?.previous || window.location.pathname
 }

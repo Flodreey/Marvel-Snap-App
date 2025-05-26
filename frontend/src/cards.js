@@ -156,7 +156,8 @@ async function clickNextCardButton(direction) {
     removeAnimationclasses(nextImage)
     removeAnimationclasses(nameAndDescription)
 
-    navigateToCardURL(next_card.name)
+    const shouldStoreCurrentUrl = false
+    navigateToCardURL(next_card.name, shouldStoreCurrentUrl)
     fillCardInfoPage(nextCardIndex)
 }
 

@@ -71,7 +71,7 @@ function turnOffCardInformation(){
     currently_looking_at = -1
     variant_index = 0
     enableScroll()
-    pushWindowState(window.history.state.previous || window.location.pathname)
+    pushWindowState(getPreviousUrl())
 }
 
 function getNextCardIndex(direction) {
