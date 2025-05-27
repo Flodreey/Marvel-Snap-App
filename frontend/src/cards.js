@@ -89,7 +89,7 @@ function fillCardInfoPage(cardIndex) {
     // set image of card information page
     // if card has an image (not question mark image) then show that image on card information page otherwise show no image
     if (hasValidCardImage(card)) {
-        bigCardImage.style.display = "block"
+        bigCardImage.style.display = "flex"
         bigCardImage.querySelector("img").src = card.variants[0]
     } else {
         bigCardImage.style.display = "none"
@@ -128,7 +128,7 @@ async function clickNextCardButton(direction) {
 
     if (!hasValidCardImage(current_card) && hasValidCardImage(next_card)) {
         nextImage.src = next_card.variants[0]
-        bigCardImage.style.display = "block"
+        bigCardImage.style.display = "flex"
         currentImage.style.display = "none"
         addAnimationClass(nextImage, nextImageClass)
         addAnimationClass(bigCardImage, "expand-valid-image")

@@ -2,6 +2,7 @@ body{
     background-color: #7B04AE;
     font-family: 'Dosis', sans-serif;
     position: relative;
+    margin: 0;
 }
 
 .stop-scrolling{
@@ -26,10 +27,67 @@ main{
     font-size: 5em;
 }
 
-#author{
-    font-size: 50px;
+.github-corner {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.github-corner span {
+    position: absolute;
     color: white;
-    text-align: center;
+    left: 100%;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    white-space: nowrap;
+    opacity: 0;
+}
+
+.github-corner svg {
+    clip-path: polygon(0 0, 100% 0, 100% 100%);
+}
+
+.github-corner:hover .octo-arm {
+    animation: octocat-wave 560ms ease-in-out;
+}
+
+.github-corner:hover span {
+    transform: translateX(-140%);
+    opacity: 1;
+}
+
+@media (max-width: 600px) {
+    .github-corner span {
+        display: none;
+    }
+}
+
+@keyframes octocat-wave {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    20% {
+        transform: rotate(-25deg);
+    }
+
+    40% {
+        transform: rotate(10deg);
+    }
+
+    60% {
+        transform: rotate(-25deg);
+    }
+
+    80% {
+        transform: rotate(10deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
 }
 
 #card-count {
@@ -42,4 +100,47 @@ main{
 
 #card-count span {
     font-size: 40px;
+}
+
+#author{
+    font-size: 50px;
+    color: white;
+    text-align: center;
+}
+
+.github-link-bottom {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 10px;
+    background-color: #ffffff93;
+    color: #000000;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: -50px;
+    margin-bottom: 50px;
+}
+
+.github-link-bottom img {
+    width: 40px;
+    height: 40px;
+    transition: transform 0.3s ease;
+}
+
+.github-link-bottom:hover {
+    background-color: #ffffffc5;
+    transform: translateX(-50%) translateY(-2px);
+}
+
+.github-link-bottom:hover img {
+    transform: rotate(10deg) scale(1.1);
+}
+
+.github-link-bottom span {
+    font-size: 16px;
 }

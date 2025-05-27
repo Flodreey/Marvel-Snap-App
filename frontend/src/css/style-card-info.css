@@ -37,11 +37,11 @@
 }
 
 #big-card-image img{
-    max-height: 100%;
+    height: 100%;
     aspect-ratio: 4/5;
     object-fit: cover;
 
-    /* background-color: blue; */
+    /* background-color: rgba(0, 0, 255, 0.272); */
 }
 
 .radial-light {
