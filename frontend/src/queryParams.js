@@ -55,7 +55,7 @@ async function handleQueryParams() {
     setCheckboxesOfContainer(statusContainer, statusArray)
 
     const isSomeFilterParamDefined = [sorting, direction, costArray, powerArray, abilityArray, statusArray].some(x => x !== undefined)
-    if (isSomeFilterParamDefined === filter_is_collapsed) {
+    if (isSomeFilterParamDefined === isFilterCollapsed) {
         switchFilter()
     }
     if (search || isSomeFilterParamDefined) {
@@ -83,8 +83,8 @@ async function parseQueryParams(params) {
     }
 
     if (params.has("card")) {
-        if (card_data.length === 0) await fillCardsList(backendURL, true)
-        const queryCard = card_data.find(c => c.name.toLowerCase().replace(" ", "-") === params.get("card").toLowerCase())
+        if (cardData.length === 0) await fillCardsList(backendURL, true)
+        const queryCard = cardData.find(c => c.name.toLowerCase().replace(" ", "-") === params.get("card").toLowerCase())
         if (queryCard) {
             result.card = queryCard
             return result

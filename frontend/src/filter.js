@@ -1,6 +1,6 @@
 // collapses and extends the filter container
 function switchFilter() {
-    if (!filter_is_collapsed) {
+    if (!isFilterCollapsed) {
         filterContainer.style.transition = "max-height 1s, border 0.3s 0.5s, margin 0.2s 0.6s, padding 0.2s 0.6s"
         filterContainer.style.maxHeight = null
         filterContainer.style.border = "0px solid white"
@@ -15,29 +15,29 @@ function switchFilter() {
         filterContainer.style.margin = "0px 30px -30px 30px"
         filterContainer.style.padding = "0px 10px 40px 10px"
     }
-    filter_is_collapsed = !filter_is_collapsed
+    isFilterCollapsed = !isFilterCollapsed
 }
 
 // rotates the direction arrow in filter container
 function rotateDirArrow() {
-    arrowPointingDown = !arrowPointingDown
-    sortDirection.style.transform = `rotate(${arrowPointingDown ? 180 : 0}deg)`
+    isArrowPointingDown = !isArrowPointingDown
+    sortDirection.style.transform = `rotate(${isArrowPointingDown ? 180 : 0}deg)`
     greyOutApplyButton(false)
 }
 
 function setDirArrow(direction) {
     switch(direction) {
         case "up":
-            if (arrowPointingDown) rotateDirArrow()
+            if (isArrowPointingDown) rotateDirArrow()
             break
         case "down":
-            if (!arrowPointingDown) rotateDirArrow()
+            if (!isArrowPointingDown) rotateDirArrow()
             break
     }
 }
 
 function greyOutApplyButton(enable){
-    filter_greyed_out = enable
+    isFilterGreyedOut = enable
     if (enable){
         applyButton.style.filter = "blur(1px) grayscale(100%)"
         applyButton.style.opacity = "0.6"
@@ -49,7 +49,7 @@ function greyOutApplyButton(enable){
 
 function applyFilter(isSearchField, isPushingWindowState=true) {
     // clicking on a greyed out filter button does nothing
-    if (filter_greyed_out && !isSearchField) {
+    if (isFilterGreyedOut && !isSearchField) {
         return 
     }
 
@@ -116,7 +116,7 @@ function readFilterInputsAndBuildUrl(baseURL) {
     }
 
     // read direction of sorting preference
-    if (arrowPointingDown) {
+    if (isArrowPointingDown) {
         url.searchParams.set("direction", "down") // only setting parameter to "down" bc "up" is default
     }
 

@@ -22,7 +22,7 @@ function enableSearchFilter(enable) {
         filterButton.disabled = true
         searchContainer.classList.add("disabled")
         filterButton.classList.add("disabled")
-        if (!filter_is_collapsed) {
+        if (!isFilterCollapsed) {
             console.log("collapsing filter")
             switchFilter()
         }
@@ -68,8 +68,8 @@ async function preloadAndFilterImages(urlArray) {
 function turnOffCardInformation(){
     cardInformationBackground.style.display = "none"
     mainElement.style.filter = "none"
-    currently_looking_at = -1
-    variant_index = 0
+    currentlyLookingAtIndex = -1
+    variantIndex = 0
     enableScroll()
     pushWindowState(getPreviousUrl())
 }
@@ -77,10 +77,10 @@ function turnOffCardInformation(){
 function getNextCardIndex(direction) {
     if (!["right", "left"].includes(direction)) return -1
 
-    if (direction === "right" && currently_looking_at != card_data.length - 1) {
-        return currently_looking_at + 1
-    } else if (direction === "left" && currently_looking_at != 0) {
-        return currently_looking_at - 1
+    if (direction === "right" && currentlyLookingAtIndex != cardData.length - 1) {
+        return currentlyLookingAtIndex + 1
+    } else if (direction === "left" && currentlyLookingAtIndex != 0) {
+        return currentlyLookingAtIndex - 1
     }
     return -1
 }
@@ -89,9 +89,9 @@ function getNextVariantIndex(direction, card) {
     if (!["up", "down"].includes(direction)) return -1
 
     if (direction === "up") {
-        return (variant_index + 1) % card.variants.length
+        return (variantIndex + 1) % card.variants.length
     } else {
-        return (variant_index === 0) ? card.variants.length - 1 : variant_index - 1
+        return (variantIndex === 0) ? card.variants.length - 1 : variantIndex - 1
     }
 }
 

@@ -116,12 +116,12 @@ document.querySelectorAll(".input-check").forEach(inp => {
         if (!inp.checked) { // before clicking input was checked
             allButton.checked = false
         } else { // before clicking input was not checked
-            let all_inputs_checked = true
+            let isAllInputsChecked = true
             container.querySelectorAll("input").forEach(i => {
                 if (!i.checked) 
-                    all_inputs_checked = false
+                    isAllInputsChecked = false
             })
-            if (all_inputs_checked) 
+            if (isAllInputsChecked) 
                 allButton.checked = true
         }
 

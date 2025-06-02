@@ -32,13 +32,13 @@ const radialGradientForeground = bigCardImage.querySelector(".radial-light")
 
 // global variables
 const backendURL = "http://localhost:8000/cards"
-let card_data = []
-let currently_looking_at = -1
-let variant_index = 0
-let filter_is_collapsed = true
+let cardData = []
+let currentlyLookingAtIndex = -1
+let variantIndex = 0
+let isFilterCollapsed = true
 
-let arrowPointingDown = false
-let filter_greyed_out = true
+let isArrowPointingDown = false
+let isFilterGreyedOut = true
 
 const SLIDE_ANIMATION_DURATION = 300   
 document.documentElement.style.setProperty('--slide-animation-duration', `${SLIDE_ANIMATION_DURATION}ms`);

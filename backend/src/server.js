@@ -101,9 +101,9 @@ async function mapCardsFromAPI(cardsFromAPI, makeImageChecks = true) {
 app.get('/cards', async (req, res) => {
     console.log(`client called endpoint: ${req.url}`)
 
-    let cards_filtered = filterAndSort(cachedCards, req.query)
+    let cardsFiltered = filterAndSort(cachedCards, req.query)
 
-    const clientCards = cards_filtered.map(card => ({
+    const clientCards = cardsFiltered.map(card => ({
         name: card.name, 
         description: card.description,
         variants: card.variants

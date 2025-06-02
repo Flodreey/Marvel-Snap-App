@@ -1,6 +1,6 @@
-async function getCardsFromBackend(api_url) {
+async function getCardsFromBackend(apiURL) {
     try {
-        const response = await fetch(api_url)
+        const response = await fetch(apiURL)
         const responseJson = await response.json() 
         const totalCardCount = responseJson.totalCardCount
         const backendCards = responseJson.cards
@@ -23,8 +23,8 @@ async function getCardsFromBackend(api_url) {
 }
 
 // fetches card data from server and fills cardList element in index.html with all card's HTML
-async function fillCardsList(api_url, isSavingToLocalStorage) {
-    const { cards, totalCardCount, hasErrorHappened } = await getCardsFromBackend(api_url)
+async function fillCardsList(apiURL, isSavingToLocalStorage) {
+    const { cards, totalCardCount, hasErrorHappened } = await getCardsFromBackend(apiURL)
 
     cardCount.querySelectorAll("span")[0].innerHTML = cards.length
     cardCount.querySelectorAll("span")[1].innerHTML = totalCardCount
@@ -51,18 +51,18 @@ async function fillCardsList(api_url, isSavingToLocalStorage) {
         }
     }
 
-    card_data = []
+    cardData = []
     cards.forEach((card, index) => {
         // create HTML for current card and insert it into index.html
-        const card_html = createCardHTML(index, card.name, card.variants[0])
-        cardList.insertAdjacentHTML("beforeend", card_html)
+        const cardHTML = createCardHTML(index, card.name, card.variants[0])
+        cardList.insertAdjacentHTML("beforeend", cardHTML)
 
         const currentCardToStore = {
             name: card.name,
             description: card.description,
             variants: card.variants
         }
-        card_data.push({index, ...currentCardToStore})
+        cardData.push({index, ...currentCardToStore})
 
         if (!hasErrorHappened && isSavingToLocalStorage && localStorage) {
             const jsonString = JSON.stringify(currentCardToStore)
@@ -83,7 +83,7 @@ function setNameAndDescription(name, description) {
 }
 
 function fillCardInfoPage(cardIndex) {
-    const card = card_data[cardIndex]
+    const card = cardData[cardIndex]
     if (!card) return
     
     // set image of card information page
@@ -103,8 +103,8 @@ function fillCardInfoPage(cardIndex) {
         // card.variants = await preloadAndFilterImages(card.variants)
         variantButtonContainer.style.display = card.variants.length == 1 ? "none" : "block"
     }
-    currently_looking_at = cardIndex
-    variant_index = 0
+    currentlyLookingAtIndex = cardIndex
+    variantIndex = 0
 
     preloadAndFilterImages(card.variants).then(newVariants => card.variants = newVariants)
 }
@@ -118,38 +118,38 @@ async function clickNextCardButton(direction) {
 
     variantButtonContainer.style.display = "none"
 
-    const current_card = card_data[currently_looking_at]
-    const next_card = card_data[nextCardIndex]
+    const currentCard = cardData[currentlyLookingAtIndex]
+    const nextCard = cardData[nextCardIndex]
 
     const { currentImageClass, nextImageClass } = getAnimationClassesFromDirection(direction)
 
     const currentImage = bigCardImage.querySelector(".current")
     const nextImage = bigCardImage.querySelector(".next")
 
-    if (!hasValidCardImage(current_card) && hasValidCardImage(next_card)) {
-        nextImage.src = next_card.variants[0]
+    if (!hasValidCardImage(currentCard) && hasValidCardImage(nextCard)) {
+        nextImage.src = nextCard.variants[0]
         bigCardImage.style.display = "flex"
         currentImage.style.display = "none"
         addAnimationClass(nextImage, nextImageClass)
         addAnimationClass(bigCardImage, "expand-valid-image")
 
-    } else if (hasValidCardImage(current_card) && !hasValidCardImage(next_card)) {
+    } else if (hasValidCardImage(currentCard) && !hasValidCardImage(nextCard)) {
         addAnimationClass(currentImage, currentImageClass)
         addAnimationClass(bigCardImage, "shrink-invalid-image")
 
-    } else if (hasValidCardImage(current_card) && hasValidCardImage(next_card)) {
-        nextImage.src = next_card.variants[0]
+    } else if (hasValidCardImage(currentCard) && hasValidCardImage(nextCard)) {
+        nextImage.src = nextCard.variants[0]
         addAnimationClass(currentImage, currentImageClass)
         addAnimationClass(nextImage, nextImageClass)
     }
     addAnimationClass(nameAndDescription, "fade-animation")
 
     await waitForMs(SLIDE_ANIMATION_DURATION / 2)
-    setNameAndDescription(next_card.name, next_card.description)
+    setNameAndDescription(nextCard.name, nextCard.description)
 
     await waitForMs(SLIDE_ANIMATION_DURATION / 2)
 
-    if (hasValidCardImage(next_card)) currentImage.style.display = "block"
+    if (hasValidCardImage(nextCard)) currentImage.style.display = "block"
 
     removeAnimationclasses(bigCardImage)
     removeAnimationclasses(currentImage)
@@ -157,19 +157,19 @@ async function clickNextCardButton(direction) {
     removeAnimationclasses(nameAndDescription)
 
     const shouldStoreCurrentUrl = false
-    navigateToCardURL(next_card.name, shouldStoreCurrentUrl)
+    navigateToCardURL(nextCard.name, shouldStoreCurrentUrl)
     fillCardInfoPage(nextCardIndex)
 }
 
 async function clickNextVariantButton(direction) {
-    const current_card = card_data[currently_looking_at]
+    const currentCard = cardData[currentlyLookingAtIndex]
 
-    if (!["up", "down"].includes(direction) || !isSlideAnimationAllowed() || current_card.variants.length <= 1)
+    if (!["up", "down"].includes(direction) || !isSlideAnimationAllowed() || currentCard.variants.length <= 1)
         return 
     slideTimestamp = Date.now()
 
-    variant_index = getNextVariantIndex(direction, current_card)
-    const nextImageUrl = current_card.variants[variant_index]
+    variantIndex = getNextVariantIndex(direction, currentCard)
+    const nextImageUrl = currentCard.variants[variantIndex]
 
     const currentImage = bigCardImage.querySelector(".current")
     const nextImage = bigCardImage.querySelector(".next")

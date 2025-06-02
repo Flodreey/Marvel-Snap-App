@@ -34,11 +34,11 @@ function clickCard(cardElement){
 
     disableScroll()
     
-    const card_name = cardElement.querySelector(".card-name").innerHTML
+    const cardName = cardElement.querySelector(".card-name").innerHTML
     const cardIndex = parseInt(cardElement.querySelector("img").dataset.cardindex)
 
     const shouldStoreCurrentUrl = true
-    navigateToCardURL(card_name, shouldStoreCurrentUrl)
+    navigateToCardURL(cardName, shouldStoreCurrentUrl)
     fillCardInfoPage(cardIndex)
 }
 
@@ -46,7 +46,7 @@ function handleImgLoadError(image) {
     // if image of one card could not be loaded (maybe bc doesn't exist) then use question mark image instead
     image.src="images/Question-Mark.png"
 
-    // set the imageURL of card with unknown image in card_data to ""
-    const card_index = image.dataset.cardindex
-    card_data[card_index].variants[0] = ""
+    // set the imageURL of card with unknown image in cardData to ""
+    const cardIndex = image.dataset.cardindex
+    cardData[cardIndex].variants[0] = ""
 }
